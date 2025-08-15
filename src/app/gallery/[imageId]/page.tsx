@@ -1,5 +1,4 @@
 "use client";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, { use, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -10,6 +9,7 @@ import useAuthGuard from "@/hooks/useAuthGuard";
 import { useRouter } from "next/navigation";
 import { ImageComments } from "../components/ImageComments";
 import { useGetImage } from "@/hooks/useGetImage";
+import Image from "next/image";
 
 interface ImagePageProps {
   params: Promise<{
@@ -58,23 +58,18 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
   return (
     <>
       <div className="flex flex-col items-center justify-center px-8">
-        {/* <Button
-          startIcon={<ArrowBackIcon />}
-          variant="outlined"
-          onClick={() => router.push("/gallery")}
-          className="absolute top-[2rem] left-[-4rem]"
-        >
-          Back to Gallery
-        </Button> */}
         <div className="flex flex-col items-center justify-center w-full pt-8">
           <h1 className="text-2xl font-bold mb-4">
             {formatFileNameForDisplay(image.fileName)}
           </h1>
-          <img
-            src={image.imageUrl}
-            alt={image.fileName}
-            className="max-w-full h-auto max-h-[50vh] object-contain rounded-lg shadow-lg mb-4"
-          />
+          <div className="relative max-w-full max-h-[50vh] h-auto mb-4 rounded-lg shadow-lg">
+            <Image
+              src={image.imageUrl}
+              alt={image.fileName || ""}
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
           {image.email === "Unknown" ? (
             <p>{image.username === "Unknown" ? image.email : image.username}</p>
           ) : (
@@ -106,8 +101,8 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           <Button
             variant="outlined"
             onClick={() => {
-              addCommentToImage(imageId, image.userId, userEmail, imageComment),
-                setImageComment("");
+              addCommentToImage(imageId, image.userId, userEmail, imageComment);
+              setImageComment("");
             }}
             sx={{
               width: "100%",

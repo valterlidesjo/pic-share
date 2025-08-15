@@ -2,7 +2,6 @@
 
 import React from "react";
 import useGetVerifiedUsers from "@/hooks/useGetVerifiedUsers";
-import SearchBar from "@/components/ui/SearchBar";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import AlgoliaSearch from "@/components/AlgoliaSearch";

@@ -1,4 +1,10 @@
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 
@@ -8,6 +14,10 @@ export type Comment = {
   userId: string;
   email: string;
   createdAt: Date;
+};
+
+type FirestoreComment = Omit<Comment, "createdAt"> & {
+  createdAt: Timestamp;
 };
 
 const useGetComments = (imageId: string) => {
@@ -23,9 +33,7 @@ const useGetComments = (imageId: string) => {
       q,
       (snapshot) => {
         const commentsList = snapshot.docs.map((doc) => {
-          const data = doc.data() as Omit<Comment, "id" | "createdAt"> & {
-            createdAt: any;
-          };
+          const data = doc.data() as FirestoreComment;
           const createdAtDate = data.createdAt?.toDate
             ? data.createdAt.toDate()
             : new Date();

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { db, auth } from "@/firebaseConfig";
-import { User } from "firebase/auth";
+import { db } from "@/firebaseConfig";
 import useAuthGuard from "./useAuthGuard";
 
-interface UserInfo {
+export interface UserInfo {
   email: string | null;
   username?: string | null;
   emailVerified?: boolean;
@@ -33,6 +32,7 @@ export default function useGetUserInfo() {
           setUserInfo({ email: currentUserEmail });
         }
       } catch (error) {
+        console.error("Error fetching user info: ", error);
         setUserInfo(null);
       }
     };

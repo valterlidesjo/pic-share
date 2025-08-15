@@ -9,6 +9,7 @@ import { followUser } from "@/utils/followUser";
 import useAuthGuard from "@/hooks/useAuthGuard";
 import useCheckIfUserFollow from "@/hooks/useCheckIfUserFollow";
 import { unfollowUser } from "@/utils/unfollowUser";
+import Image from "next/image";
 
 interface UserPageProps {
   params: Promise<{
@@ -40,7 +41,8 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
     <>
       <div className="w-full flex flex-col items-center justify-center">
         <h1 className="text-3xl font-bold">
-          {user?.username === "Unknown" ? user?.email : user?.username}'s page
+          {user?.username === "Unknown" ? user?.email : user?.username}&apos;s
+          page
         </h1>
         <Button
           variant="outlined"
@@ -60,11 +62,14 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
                 className="border p-2 rounded-lg shadow-md mb-8"
                 onClick={() => router.push(`/gallery/${image.id}`)}
               >
-                <img
-                  src={image.imageUrl}
-                  alt={image.fileName || "Galleri Bild"}
-                  className="w-full h-48 object-cover rounded-md mb-2"
-                />
+                <div className="relative w-full h-48 mb-2">
+                  <Image
+                    src={image.imageUrl}
+                    alt={image.fileName || "Galleri Bild"}
+                    fill
+                    className="object-cover rounded-md"
+                  />
+                </div>
                 <p className="text-sm font-semibold truncate">
                   {formatFileNameForDisplay(image.fileName)}
                 </p>

@@ -1,7 +1,11 @@
 import { db } from "@/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { User } from "./useGetVerifiedUsers";
+
+type FirestoreUser = Omit<User, "createdAt"> & {
+  createdAt: Timestamp;
+};
 
 const useGetUser = (userId: string) => {
   const [user, setUser] = useState<User | null>(null);
@@ -12,9 +16,7 @@ const useGetUser = (userId: string) => {
         const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          const data = docSnap.data() as Omit<User, "createdAt"> & {
-            createdAt: any;
-          };
+          const data = docSnap.data() as FirestoreUser;
           const createdAtDate = data.createdAt?.toDate
             ? data.createdAt.toDate()
             : new Date();

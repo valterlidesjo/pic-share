@@ -1,0 +1,14 @@
+{
+  "/favicon.ico/route": "/favicon.ico",
+  "/_not-found/page": "/_not-found",
+  "/gallery/page": "/gallery",
+  "/feed/page": "/feed",
+  "/gallery/[imageId]/page": "/gallery/[imageId]",
+  "/page": "/",
+  "/profile/page": "/profile",
+  "/sign-up/page": "/sign-up",
+  "/sign-in/page": "/sign-in",
+  "/upload/page": "/upload",
+  "/users/page": "/users",
+  "/users/[userId]/page": "/users/[userId]"
+}

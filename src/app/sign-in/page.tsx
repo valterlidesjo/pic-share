@@ -71,7 +71,7 @@ const SignIn = () => {
             </Button>
           </form>
           <p className="mt-4">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a
               onClick={() => router.push("/sign-up")}
               className="font-bold cursor-pointer"

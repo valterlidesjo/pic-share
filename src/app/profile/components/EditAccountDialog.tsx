@@ -12,20 +12,19 @@ import {
 import { TransitionProps } from "@mui/material/transitions";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { User as UserProps } from "firebase/auth";
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
-) {
+const Transition = React.forwardRef<
+  unknown,
+  TransitionProps & { children: React.ReactElement }
+>(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const EditAccountDialog = ({
   user,
-  userInfo,
 }: {
-  user: any;
-  userInfo: any;
+  user: UserProps | null | undefined;
 }) => {
   const [open, setOpen] = useState(false);
   const [newUsername, setNewUsername] = useState("");
@@ -38,6 +37,7 @@ const EditAccountDialog = ({
       await updateDoc(doc(db, "users", user.uid), { username: newUsername });
       setUsernameMessage(`Username edited to ${newUsername} successfully!`);
     } catch (error) {
+      console.error("Error editing username: ", error);
       setUsernameMessage(`Error editing username`);
     }
   };
@@ -74,7 +74,7 @@ const EditAccountDialog = ({
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={() => setOpen(false)}>
-            Don't edit
+            Don&apos;t edit
           </Button>
           <Button
             variant="outlined"

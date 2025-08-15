@@ -1,5 +1,11 @@
 import { db } from "@/firebaseConfig";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  Timestamp,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useAuthGuard from "./useAuthGuard";
 
@@ -13,6 +19,10 @@ export type Image = {
   username: string;
 };
 
+export type FirestoreImage = Omit<Image, "uploadedAt"> & {
+  uploadedAt: Timestamp;
+};
+
 export const useGetAllImages = () => {
   const [images, setImages] = useState<Image[]>([]);
   const { user } = useAuthGuard();
@@ -21,9 +31,7 @@ export const useGetAllImages = () => {
       const q = query(collection(db, "images"), orderBy("uploadedAt", "desc"));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const imageList = snapshot.docs.map((doc) => {
-          const data = doc.data() as Omit<Image, "id" | "uploadedAt"> & {
-            uploadedAt: any;
-          };
+          const data = doc.data() as FirestoreImage;
           const uploadedAtDate = data.uploadedAt?.toDate
             ? data.uploadedAt.toDate()
             : new Date();

@@ -1,10 +1,11 @@
 "use client";
 import { useGhostGuard } from "@/hooks/useGhostGuard";
 import Button from "@mui/material/Button";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
-  const { user } = useGhostGuard();
+  useGhostGuard();
 
   return (
     <>
@@ -13,11 +14,15 @@ export default function Home() {
           <h1 className="px-8 w-full text-center font-bold text-2xl">
             The new big social media plattform everybody is talking about!
           </h1>
-          <img
-            src="./picshare2.png"
-            alt="PicShare logo 1"
-            className="h-[120px]"
-          />
+          <div className="relative h-[120px] w-[120px]">
+            <Image
+              src="/picshare2.png"
+              alt="PicShare logo 1"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
           <p className="text-2xl px-8 w-full py-8">
             Start browsing or sign up right away to rid all of your FOMO and see
             why all your friends are hyping{" "}

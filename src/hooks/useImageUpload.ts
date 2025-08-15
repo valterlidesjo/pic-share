@@ -71,7 +71,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
       setUploading(false);
       setSelectedFile(null);
     }
-  }, [selectedFile, user, ghostUser]);
+  }, [selectedFile, user, ghostUser, userInfo]);
   return {
     selectedFile,
     setSelectedFile,

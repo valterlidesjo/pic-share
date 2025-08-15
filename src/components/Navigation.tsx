@@ -16,6 +16,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Image from "next/image";
 
 const Navigation: React.FC = () => {
   const { user } = useAuthGuard();
@@ -77,11 +78,15 @@ const Navigation: React.FC = () => {
                 >
                   <MenuIcon />
                 </IconButton>
-                <img
-                  src="./picshare.png"
-                  alt="PicShare logo 1"
-                  className="h-[60px]"
-                />
+                <div className="relative h-[60px] w-[60px]">
+                  <Image
+                    src="/picshare.png"
+                    alt="PicShare logo 1"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </Box>
             </>
           )}
@@ -95,11 +100,15 @@ const Navigation: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <img
-                src="./picshare.png"
-                alt="PicShare logo 1"
-                className="h-[60px]"
-              />{" "}
+              <div className="relative h-[60px] w-[60px]">
+                <Image
+                  src="/picshare.png"
+                  alt="PicShare logo 1"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
               {menuOptions.map((option, idx) =>
                 option.action ? (
                   <Button

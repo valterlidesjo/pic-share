@@ -1,13 +1,8 @@
-import { auth } from "@/firebaseConfig";
 import { useGetAllImages } from "@/hooks/useGetAllImages";
-import { Button } from "@mui/material";
-import { signOut, User } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { Images } from "./Images";
 
-const GalleryContent = ({ user }: { user: User }) => {
-  const router = useRouter();
+const GalleryContent = () => {
   const { images } = useGetAllImages();
 
   return (

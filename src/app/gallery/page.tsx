@@ -17,7 +17,7 @@ const Gallery = () => {
   if (!user) {
     return <div>Loading...</div>;
   }
-  return <GalleryContent user={user} />;
+  return <GalleryContent />;
 };
 
 export default Gallery;

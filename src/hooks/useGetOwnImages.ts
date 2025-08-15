@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-import { Image } from "./useGetAllImages";
+import { FirestoreImage, Image } from "./useGetAllImages";
 
 export const useGetPersonalImages = (userId: string | undefined) => {
   const [images, setImages] = useState<Image[]>([]);
@@ -17,9 +17,7 @@ export const useGetPersonalImages = (userId: string | undefined) => {
       q,
       (snapshot) => {
         const imageList = snapshot.docs.map((doc) => {
-          const data = doc.data() as Omit<Image, "id" | "uploadedAt"> & {
-            uploadedAt: any;
-          };
+          const data = doc.data() as FirestoreImage;
           const uploadedAtDate = data.uploadedAt?.toDate
             ? data.uploadedAt.toDate()
             : new Date();

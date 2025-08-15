@@ -1,7 +1,6 @@
 import React from "react";
 import { liteClient as algoliasearch } from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
-import { User } from "@/hooks/useGetVerifiedUsers";
+import { InstantSearch } from "react-instantsearch";
 import SearchBar from "./ui/SearchBar";
 
 const AlgoliaSearch = () => {

@@ -8,19 +8,24 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { updateFileName, deleteImage } from "@/utils/imageFunctions";
+import Image from "next/image";
+import { Image as ImageProps } from "@/hooks/useGetAllImages";
 
-const ProfileImageCard = ({ image }: { image: any }) => {
+const ProfileImageCard = ({ image }: { image: ImageProps }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedFileName, setEditedFileName] = useState("");
 
   return (
     <div className="border p-2 rounded-lg shadow-md mb-8">
-      <img
-        src={image.imageUrl}
-        alt={image.fileName || "Galleri Bild"}
-        className="w-full h-48 object-cover rounded-md mb-2"
-      />
+      <div className="relative w-full h-48 mb-2">
+        <Image
+          src={image.imageUrl}
+          alt={image.fileName || "Galleri Bild"}
+          fill
+          className="object-cover rounded-md"
+        />
+      </div>
       <div className="flex items-center justify-start gap-2">
         {isEditing ? (
           <>

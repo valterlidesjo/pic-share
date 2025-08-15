@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image } from "./useGetAllImages";
+import { FirestoreImage, Image } from "./useGetAllImages";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
@@ -14,9 +14,7 @@ export const useGetImage = (imageId: string) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const data = docSnap.data() as Omit<Image, "id" | "uploadedAt"> & {
-            uploadedAt: any;
-          };
+          const data = docSnap.data() as FirestoreImage;
           const uploadedAtDate = data.uploadedAt?.toDate
             ? data.uploadedAt.toDate()
             : new Date();

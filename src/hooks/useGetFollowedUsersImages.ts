@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image } from "./useGetAllImages";
+import { FirestoreImage, Image } from "./useGetAllImages";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
@@ -19,9 +19,7 @@ const useGetFollowedUsersImages = (followedIds: string[]) => {
       q,
       (snapshot) => {
         const imageList = snapshot.docs.map((doc) => {
-          const data = doc.data() as Omit<Image, "id" | "uploadedAt"> & {
-            uploadedAt: any;
-          };
+          const data = doc.data() as FirestoreImage;
           const uploadedAtDate = data.uploadedAt.toDate
             ? data.uploadedAt.toDate()
             : new Date();

@@ -17,9 +17,8 @@ const Profile = () => {
   const { user, loading } = useAuthGuard();
   const { userInfo } = useGetUserInfo();
   const [status, setStatus] = useState("");
-  const [refresh, setRefresh] = useState(0);
+  const [, setRefresh] = useState(0);
 
-  if (!user) return <div>Could not find user</div>;
   const { images } = useGetPersonalImages(user?.uid);
   const { followerCount } = useCheckFollowerCount(user?.uid);
 
@@ -90,7 +89,7 @@ const Profile = () => {
             </div>
           )}
           <div className="flex flex-col gap-2 w-full sm:max-w-[512px]">
-            <EditAccountDialog user={user} userInfo={userInfo} />
+            <EditAccountDialog user={user} />
             <Button
               variant="outlined"
               color="error"

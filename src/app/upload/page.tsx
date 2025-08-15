@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import Button from "@mui/material/Button";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const Upload = () => {
   const {
@@ -14,7 +13,6 @@ const Upload = () => {
     downloadURL,
     handleUpload,
   } = useImageUpload();
-  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -24,14 +22,6 @@ const Upload = () => {
 
   return (
     <>
-      {/* <Button
-        startIcon={<ArrowBackIcon />}
-        variant="outlined"
-        onClick={() => router.push("/gallery")}
-        className="absolute top-5 left-5"
-      >
-        Back to gallery
-      </Button> */}
       <div className="flex flex-col justify-center items-center px-8 gap-4">
         <h1 className="text-[#1976D2] font-bold text-2xl">Upload</h1>
         <input
@@ -53,11 +43,14 @@ const Upload = () => {
       {downloadURL && (
         <div>
           <p>Image uploaded successfully!</p>
-          <img
-            src={downloadURL}
-            alt="Uploaded"
-            className="max-w-full h-auto mt-4 px-8"
-          />
+          <div className="relative max-w-full h-auto mt-4 px-8">
+            <Image
+              src={downloadURL}
+              alt="Uploaded"
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
       )}
     </>
