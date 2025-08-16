@@ -14,10 +14,12 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 let app: any = null;
 let auth: any = null;
 let db: any = null;
 let storage: any = null;
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 if (
   typeof window !== "undefined" &&
