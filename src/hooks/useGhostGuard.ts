@@ -16,6 +16,15 @@ export const useGhostGuard = (): AuthState => {
     error: null,
   });
   useEffect(() => {
+    if (typeof window === "undefined" || !auth) {
+      setGhostAuthState({
+        user: null,
+        loading: false,
+        error: null,
+      });
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setGhostAuthState({ user: currentUser, loading: false, error: null });
