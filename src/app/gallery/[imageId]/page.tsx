@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import React, { use, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";

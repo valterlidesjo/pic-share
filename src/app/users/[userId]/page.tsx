@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
 import useGetUser from "@/hooks/useGetUser";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
