@@ -8,6 +8,10 @@ export const useGetImage = (imageId: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
+    if (!imageId || !db) {
+      setImage(null);
+      return;
+    }
     const fetchImage = async () => {
       try {
         const docRef = doc(db, "images", imageId);

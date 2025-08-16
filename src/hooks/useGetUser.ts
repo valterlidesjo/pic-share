@@ -11,6 +11,10 @@ const useGetUser = (userId: string) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (!userId || !db) {
+      setUser(null);
+      return;
+    }
     const fetchUser = async () => {
       try {
         const docRef = doc(db, "users", userId);

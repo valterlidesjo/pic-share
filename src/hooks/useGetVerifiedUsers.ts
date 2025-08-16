@@ -14,6 +14,10 @@ const useGetVerifiedUsers = () => {
   const [users, setUsers] = useState<User[] | null>(null);
 
   useEffect(() => {
+    if (!db) {
+      setUsers(null);
+      return;
+    }
     const q = query(
       collection(db, "users"),
       where("emailVerified", "==", true)

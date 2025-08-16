@@ -16,7 +16,7 @@ export default function useGetUserInfo() {
     const fetchUserInfo = async () => {
       const currentUserId = user?.uid;
       const currentUserEmail = user?.email || "";
-      if (!currentUserId) {
+      if (!currentUserId || !db) {
         setUserInfo(null);
         return;
       }

@@ -8,7 +8,10 @@ export const useGetPersonalImages = (userId: string | undefined) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !db) {
+      console.log("Skipping image fetch - userId or db not available");
+      setError(null);
+
       setImages([]);
       return;
     }

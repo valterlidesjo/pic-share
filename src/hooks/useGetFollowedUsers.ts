@@ -26,7 +26,7 @@ const useGetFollowedUsers = (userId: string | undefined) => {
   );
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !db) {
       setFollowedUsers(null);
       return;
     }

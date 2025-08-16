@@ -8,7 +8,7 @@ const useCheckIfUserFollow = (
 ) => {
   const [isFollowing, setIsFollowing] = useState(false);
   useEffect(() => {
-    if (!userId || !followedId) {
+    if (!userId || !followedId || !db) {
       setIsFollowing(false);
       return;
     }

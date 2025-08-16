@@ -31,7 +31,7 @@ export const useSignUpUser = () => {
   const [message, setMessage] = useState<string | null>(null);
 
   const signUpUser = async (email: string, password: string) => {
-    if (!user) {
+    if (!user || !db) {
       console.error("No ghost user to link account with");
       setMessage("No ghost user to link account with");
       return;

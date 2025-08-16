@@ -1,11 +1,12 @@
 import { db } from "@/firebaseConfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { debug } from "node:console";
 import { useEffect, useState } from "react";
 
 const useCheckFollowerCount = (userId: string | undefined) => {
   const [followerCount, setFollowerCount] = useState<number | null>(null);
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !debug) {
       setFollowerCount(null);
       return;
     }

@@ -7,7 +7,7 @@ const useGetFollowedUsersImages = (followedIds: string[]) => {
   const [followedUsersImages, setFollowedUsersImages] = useState<Image[]>([]);
 
   useEffect(() => {
-    if (!followedIds || followedIds.length === 0) {
+    if (!followedIds || followedIds.length === 0 || !db) {
       setFollowedUsersImages([]);
       return;
     }

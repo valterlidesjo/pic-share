@@ -27,6 +27,10 @@ export const useGetAllImages = () => {
   const [images, setImages] = useState<Image[]>([]);
   const { user } = useAuthGuard();
   useEffect(() => {
+    if (!user || !db) {
+      setImages([]);
+      return;
+    }
     if (user) {
       const q = query(collection(db, "images"), orderBy("uploadedAt", "desc"));
       const unsubscribe = onSnapshot(q, (snapshot) => {

@@ -33,7 +33,11 @@ export const useImageUpload = (): UseImageUploadReturn => {
   }, []);
 
   const handleUpload = useCallback(async () => {
-    if (!user && !ghostUser) {
+    if (!db) {
+      console.warn("Firestore not initialized");
+      return;
+    }
+    if (!user || !ghostUser || !db) {
       setUploadError(
         "You were not able to upload the image. You are not logged in or a anonymous user."
       );

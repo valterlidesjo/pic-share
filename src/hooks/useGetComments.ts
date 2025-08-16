@@ -24,7 +24,7 @@ const useGetComments = (imageId: string) => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
-    if (!imageId) return;
+    if (!imageId || !db) return;
 
     const commentsCollectionRef = collection(db, "images", imageId, "comments");
     const q = query(commentsCollectionRef, orderBy("createdAt", "asc"));

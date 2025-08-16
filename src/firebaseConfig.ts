@@ -32,4 +32,10 @@ if (
   storage = getStorage(app);
 }
 
+console.log("Firebase config check:", {
+  hasWindow: typeof window !== "undefined",
+  hasApiKey: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  dbInitialized: !!db,
+});
+
 export { db, auth, storage };
