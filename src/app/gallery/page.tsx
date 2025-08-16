@@ -8,17 +8,18 @@ import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const Gallery = () => {
   useGhostGuard();
-  const { user } = useAuthGuard();
+  const { user, loading } = useAuthGuard();
   const { images } = useGetPersonalImages(user?.uid);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user) {
     return <div>Could not find user</div>;
   }
   if (user?.isAnonymous) {
     return <GuestGalleryContent ownImages={images} />;
-  }
-  if (!user) {
-    return <div>Loading...</div>;
   }
   return <GalleryContent />;
 };

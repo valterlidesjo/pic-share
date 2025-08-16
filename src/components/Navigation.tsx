@@ -19,10 +19,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
 
 const Navigation: React.FC = () => {
-  const { user } = useAuthGuard();
+  const { user, loading } = useAuthGuard();
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width:640px)");
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const isAnonymous = user?.isAnonymous;
 
