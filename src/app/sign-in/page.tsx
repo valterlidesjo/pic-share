@@ -5,12 +5,14 @@ import { auth } from "@/firebaseConfig";
 import { useRouter } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { checkUserDoc } from "@/utils/checkUserDoc";
+import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const SignIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+  useGhostGuard();
 
   const handleSignIn = async (e: React.FormEvent) => {
     try {

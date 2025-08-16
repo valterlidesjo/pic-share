@@ -4,10 +4,12 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useSignUpUser } from "@/hooks/useSignUpUser";
+import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  useGhostGuard();
 
   const { signUpUser, message } = useSignUpUser();
 

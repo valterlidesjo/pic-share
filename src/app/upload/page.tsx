@@ -3,6 +3,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import Image from "next/image";
+import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const Upload = () => {
   const {
@@ -13,6 +14,7 @@ const Upload = () => {
     downloadURL,
     handleUpload,
   } = useImageUpload();
+  useGhostGuard();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

@@ -4,10 +4,13 @@ import React from "react";
 import GuestGalleryContent from "./components/GuestGalleryContent";
 import GalleryContent from "./components/GalleryContent";
 import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
+import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const Gallery = () => {
+  useGhostGuard();
   const { user } = useAuthGuard();
   const { images } = useGetPersonalImages(user?.uid);
+
   if (!user) {
     return <div>Could not find user</div>;
   }

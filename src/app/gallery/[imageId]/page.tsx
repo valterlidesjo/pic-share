@@ -63,7 +63,7 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           <h1 className="text-2xl font-bold mb-4">
             {formatFileNameForDisplay(image.fileName)}
           </h1>
-          <div className="relative max-w-full max-h-[50vh] h-auto mb-4 rounded-lg shadow-lg">
+          <div className="relative w-full aspect-video h-auto mb-4">
             <Image
               src={image.imageUrl}
               alt={image.fileName || ""}
