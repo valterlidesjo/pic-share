@@ -18,7 +18,7 @@ const useAuthGuard = () => {
     if (!loading && !user && isAnonymous) {
       router.push("/sign-in");
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, shouldUseAuth]);
   return {
     user: shouldUseAuth ? user : null,
     loading: shouldUseAuth ? loading : false,
