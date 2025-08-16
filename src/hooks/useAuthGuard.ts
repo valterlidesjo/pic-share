@@ -1,28 +1,29 @@
-import { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebaseConfig";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 const useAuthGuard = () => {
-  const shouldUseAuth = typeof window !== "undefined" && auth;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, loading] = useAuthState(shouldUseAuth ? auth : (null as any));
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (!shouldUseAuth) {
+    if (typeof window === "undefined" || !auth) {
+      setLoading(false);
       return;
     }
-
-    const isAnonymous = user?.isAnonymous;
-    if (!loading && !user && isAnonymous) {
-      router.push("/sign-in");
-    }
-  }, [user, loading, router, shouldUseAuth]);
-  return {
-    user: shouldUseAuth ? user : null,
-    loading: shouldUseAuth ? loading : false,
-  };
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+      const isAnonymous = currentUser?.isAnonymous;
+      if (!currentUser && isAnonymous) {
+        router.push("/sign-in");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
+  return { user, loading };
 };
 
 export default useAuthGuard;
