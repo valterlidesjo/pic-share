@@ -8,9 +8,12 @@ Its my second project with this stack and I'm working on these techs because of 
 A social media app seemed like a fun and challenging project where I could try out firebase fully. 
 
 <strong>1. Firebase Authentication</strong>
+###
 First I used firebase authentication for anonymous authentication when I user first lands on the website. This in order to make it possible to upload pictures authenticated without creating an account. Then when you sign up with email and password your anonymous account is linked to your real account.
 In order to fully complete your account and become a verified member you need to verify your email with email verification. 
 Then you will be able to use the full app and be seen as a verified user.
+
+###
 
 2. Firestore Database
 I used firestore as my database for images info, users, followers, followed users and comments. With this project I learned to work with connection between collection in a NoSQL database since I've only used SQL for more complex database solutions before. 
