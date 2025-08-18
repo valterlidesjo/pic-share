@@ -23,12 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scheme-light light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navigation />
-        <div className="w-full h-[60px]"></div>
+        <div className="w-full h-[80px]"></div>
         {children}
       </body>
     </html>
