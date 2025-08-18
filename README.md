@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# PicShare - Social Media app
 
-First, run the development server:
+PicShare is a fun projected I made to develop and deepen my skills in Next.js and Firebase. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Its my second project with this stack and I'm working on these techs because of my future internship at Done Services where I will be working with these techniques. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A social media app seemed like a fun and challenging project where I could try out firebase fully. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<strong>1. Firebase Authentication</strong>
+###
+First I used firebase authentication for anonymous authentication when I user first lands on the website. This in order to make it possible to upload pictures authenticated without creating an account. Then when you sign up with email and password your anonymous account is linked to your real account.
+In order to fully complete your account and become a verified member you need to verify your email with email verification. 
+Then you will be able to use the full app and be seen as a verified user.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+###
 
-## Learn More
+<strong>2. Firestore Database</strong>
+###
+I used firestore as my database for images info, users, followers, followed users and comments. With this project I learned to work with connection between collection in a NoSQL database since I've only used SQL for more complex database solutions before. 
+Using rules in firestore was also very instructive.
 
-To learn more about Next.js, take a look at the following resources:
+###
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<strong>3. Firebase Storage</strong>
+###
+I used storage for storing all the images that the users upload. This for a more smooth UX and developer experience. It's a secury environment to store the images and then store the image url in firestore. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+###
 
-## Deploy on Vercel
+<strong>4. Firebase Exstensions - Algolia</strong>
+###
+I used firebase exstension in order to use Algolia which is a search engine. I used algolia's instantsearch and indexing of my firestore database to be able to search for different users in the app. 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+###
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<strong>5. Firebase App Hosting</strong>
+###
+I used firebase app hosting to host my full stack application. It's a new feature from firebase which was complicated to figure out in the beginning (like with all fullstack hosting), but after figuring it out it was super smooth. New redpeploys with a github PR and super easy to rollback to an earlier verision of the app if you get problems with the latest. 
