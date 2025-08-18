@@ -47,11 +47,11 @@ export const useSignUpUser = () => {
       if (auth.currentUser) {
         await sendEmailVerification(auth.currentUser);
         setMessage(
-          "Account linked successfully! Please verify your email to continue. Remember to check your spam inbox."
+          "Account created successfully! Please verify your email to continue. Remember to check your spam inbox."
         );
       } else {
         setMessage(
-          "Account linked successfully! Could not send verification email."
+          "Account created successfully! Could not send verification email. Please sign in and ask for a retry."
         );
       }
       const firestoreSaveSuccess = await saveUserToFirestore(email, user.uid);

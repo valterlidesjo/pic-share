@@ -24,8 +24,8 @@ export default function Home() {
             />
           </div>
           <p className="text-2xl px-8 w-full py-8">
-            Start browsing or sign up right away to rid all of your FOMO and see
-            why all your friends are hyping{" "}
+            Start browsing and sign up right away to rid all of your FOMO and
+            see why all your friends are hyping{" "}
             <span className="text-[#1976D2] font-bold">PicShare</span>
           </p>
           <Button
