@@ -17,18 +17,29 @@ import { auth } from "@/firebaseConfig";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
+import { useGhostGuard } from "@/hooks/useGhostGuard";
 
 const Navigation: React.FC = () => {
+  const ghostGuard = useGhostGuard();
   const { user, loading } = useAuthGuard();
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width:640px)");
 
-  if (loading) {
+  console.log("Navigation Debug:", {
+    ghostUser: ghostGuard.user?.uid,
+    ghostAnonymous: ghostGuard.user?.isAnonymous,
+    ghostLoading: ghostGuard.loading,
+    authUser: user?.uid,
+    authAnonymous: user?.isAnonymous,
+    authLoading: loading,
+  });
+
+  if (loading || ghostGuard.loading) {
     return <div>Loading...</div>;
   }
-
-  const isAnonymous = user?.isAnonymous;
+  const currentUser = user || ghostGuard.user;
+  const isAnonymous = currentUser?.isAnonymous ?? true;
 
   const handleNav = (path: string) => {
     setDrawerOpen(false);

@@ -14,6 +14,16 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+console.log("Environment variables check:", {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? "✅ Found" : "❌ Missing",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    ? "✅ Found"
+    : "❌ Missing",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    ? "✅ Found"
+    : "❌ Missing",
+});
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 let app: any = null;
 let auth: any = null;
@@ -24,15 +34,22 @@ let storage: any = null;
 if (
   typeof window !== "undefined" &&
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-  process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-key-for-build"
+  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 ) {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  storage = getStorage(app);
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    console.log("Firebase initiallized successfully");
+  } catch (error) {
+    console.log("Could not initialize firebase: ", error);
+  }
+} else {
+  console.log("❌ Firebase initialization skipped - missing requirements");
 }
 
-console.log("Firebase config check:", {
+console.log("Final Firebase state:", {
   hasWindow: typeof window !== "undefined",
   hasApiKey: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   dbInitialized: !!db,
