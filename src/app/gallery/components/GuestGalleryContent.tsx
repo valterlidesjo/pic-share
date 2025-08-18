@@ -14,20 +14,32 @@ const GuestGalleryContent: React.FC<GuestGalleryProps> = ({ ownImages }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center px-8 gap-4">
         <h1>Welcome to the gallery!</h1>
-        <p>
+        <p className="text-xl">
           You are currently browsing as a guest. Please sign up or sign in to
-          view and comment on pictures.
+          get the full PicShare experience. Be able to upload images to
+          everyone, browse the full gallery, follow your favorites, and see
+          their feed and comment on their images!
         </p>
-        <Button variant="outlined" onClick={() => router.push("/sign-up")}>
-          Sign Up
-        </Button>
-        <Button variant="outlined" onClick={() => router.push("/sign-in")}>
-          Sign In
-        </Button>
+        <div className="flex items-center justify-evenly gap-4 mb-4">
+          <Button
+            variant="outlined"
+            onClick={() => router.push("/sign-up")}
+            sx={{ fontSize: "1.5rem" }}
+          >
+            Sign Up
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => router.push("/sign-in")}
+            sx={{ fontSize: "1.5rem" }}
+          >
+            Sign In
+          </Button>
+        </div>
       </div>
-      <div>
+      <div className="flex flex-col items-center justify-center px-8 gap-4">
         <h2>Here you can see your own pictures, if you have any uploaded</h2>
         <h2>
           You can{" "}
