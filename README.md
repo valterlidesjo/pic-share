@@ -37,3 +37,11 @@ I used firebase exstension in order to use Algolia which is a search engine. I u
 <strong>5. Firebase App Hosting</strong>
 ###
 I used firebase app hosting to host my full stack application. It's a new feature from firebase which was complicated to figure out in the beginning (like with all fullstack hosting), but after figuring it out it was super smooth. New redpeploys with a github PR and super easy to rollback to an earlier verision of the app if you get problems with the latest. 
+
+###
+
+<strong>6. Firebase Cloud Functions</strong>
+###
+I used firebase cloud functions to have a firestore triggered function that deletes the image from storage when a user deletes an image. So first the user deletes a image which deletes the doc from firestore and that triggeres the cloud function the fully deletes it from storage. 
+I also have two more functions that are similar and also firestore triggered. One that adds the email to all the uploaded images. So if a user uploads image with only a anonymous authenticated account all the users images will be updated with the email when the users signs up fully. 
+The other won is the same but with username since it's optional. So if a user decides to add a username all the images will be updated. 
