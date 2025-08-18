@@ -14,16 +14,6 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-console.log("Environment variables check:", {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? "✅ Found" : "❌ Missing",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    ? "✅ Found"
-    : "❌ Missing",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    ? "✅ Found"
-    : "❌ Missing",
-});
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 let app: any = null;
 let auth: any = null;
@@ -41,18 +31,11 @@ if (
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
-    console.log("Firebase initiallized successfully");
   } catch (error) {
     console.log("Could not initialize firebase: ", error);
   }
 } else {
   console.log("❌ Firebase initialization skipped - missing requirements");
 }
-
-console.log("Final Firebase state:", {
-  hasWindow: typeof window !== "undefined",
-  hasApiKey: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  dbInitialized: !!db,
-});
 
 export { db, auth, storage };

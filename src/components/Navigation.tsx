@@ -26,15 +26,6 @@ const Navigation: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width:640px)");
 
-  console.log("Navigation Debug:", {
-    ghostUser: ghostGuard.user?.uid,
-    ghostAnonymous: ghostGuard.user?.isAnonymous,
-    ghostLoading: ghostGuard.loading,
-    authUser: user?.uid,
-    authAnonymous: user?.isAnonymous,
-    authLoading: loading,
-  });
-
   if (loading || ghostGuard.loading) {
     return <div>Loading...</div>;
   }
@@ -72,7 +63,7 @@ const Navigation: React.FC = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ background: "white" }}>
+      <AppBar position="fixed" sx={{ background: "white" }}>
         <Toolbar>
           {!isDesktop && (
             <>

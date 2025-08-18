@@ -37,7 +37,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
       console.warn("Firestore not initialized");
       return;
     }
-    if (!user || !ghostUser || !db) {
+    if (!user || !ghostUser) {
       setUploadError(
         "You were not able to upload the image. You are not logged in or a anonymous user."
       );

@@ -60,6 +60,7 @@ const SignIn = () => {
                 variant="outlined"
                 type="password"
                 className="w-full"
+                autoComplete="new-password"
               />
             </div>
             <Button

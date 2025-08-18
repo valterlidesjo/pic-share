@@ -15,7 +15,6 @@ export const useGetPersonalImages = (userId: string | undefined) => {
       return;
     }
     if (!userId) {
-      console.log("Skipping image fetch - userId not available");
       setError(null);
       setImages([]);
       return;
