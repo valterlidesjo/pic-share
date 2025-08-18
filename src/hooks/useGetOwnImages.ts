@@ -9,7 +9,7 @@ export const useGetPersonalImages = (userId: string | undefined) => {
 
   useEffect(() => {
     if (!db) {
-      console.log("Skipping image fetch - userId not available");
+      console.log("Skipping image fetch - db not available");
       setError(null);
       setImages([]);
       return;
