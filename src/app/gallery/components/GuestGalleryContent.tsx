@@ -49,7 +49,7 @@ const GuestGalleryContent: React.FC<GuestGalleryProps> = ({ ownImages }) => {
           pictures here or sign in to get the full PicShare experience.
         </h2>
 
-        <Images images={ownImages} showComments={false} />
+        <Images images={ownImages} showComments={false} showLikes={false} />
       </div>
     </>
   );

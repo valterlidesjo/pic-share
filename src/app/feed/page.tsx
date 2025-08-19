@@ -39,7 +39,11 @@ const Feed = () => {
           uploaded from people you follow!
         </p>
       </div>
-      <Images images={followedUsersImages} showComments={true} />
+      <Images
+        images={followedUsersImages}
+        showComments={true}
+        showLikes={true}
+      />
       <div className="w-full flex flex-col justify-center items-center p-8 text-2xl">
         <p className="mb-4">
           Head over to users if you want to find more people to follow!

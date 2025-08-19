@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import Image from "next/image";
 import { useGhostGuard } from "@/hooks/useGhostGuard";
+import TextField from "@mui/material/TextField";
 
 const Upload = () => {
+  const [uniqueFilename, setUniqueFilename] = useState<string>("");
   const {
     selectedFile,
     setSelectedFile,
@@ -31,9 +33,15 @@ const Upload = () => {
           className="cursor-pointer border p-2 w-full"
           onChange={handleFileChange}
         />
+        <TextField
+          id="filename"
+          label="Name you image"
+          value={uniqueFilename}
+          onChange={(e) => setUniqueFilename(e.target.value)}
+        />
         <Button
           variant="outlined"
-          onClick={handleUpload}
+          onClick={() => handleUpload(uniqueFilename)}
           disabled={!selectedFile || uploading}
           className="text-black"
         >

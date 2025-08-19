@@ -3,6 +3,8 @@ export const dynamic = "force-dynamic";
 import React, { use, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { addCommentToImage } from "@/utils/addCommentToImage";
 import useGetComments from "@/hooks/useGetComments";
@@ -11,6 +13,10 @@ import { useRouter } from "next/navigation";
 import { ImageComments } from "../components/ImageComments";
 import { useGetImage } from "@/hooks/useGetImage";
 import Image from "next/image";
+import { likeImage } from "@/utils/likeImage";
+import useCheckIfImageIsLiked from "@/hooks/useCheckIfImageIsLiked";
+import { removeLike } from "@/utils/removeLike";
+import useCheckLikeCount from "@/hooks/useCheckLikeCount";
 
 interface ImagePageProps {
   params: Promise<{
@@ -20,9 +26,12 @@ interface ImagePageProps {
 
 const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
   const resolvedParams = use(params);
+  // const [isLiked, setIsLiked] = useState(false);
   const { imageId } = resolvedParams;
   const { comments } = useGetComments(imageId);
   const { user } = useAuthGuard();
+  const { isLiked } = useCheckIfImageIsLiked(user?.uid, imageId);
+  const { likeCount } = useCheckLikeCount(imageId);
   const { image, loading, error } = useGetImage(imageId);
   const [imageComment, setImageComment] = useState("");
   const router = useRouter();
@@ -31,6 +40,14 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
 
   const handleUserClick = (userId: string) => {
     router.push(`/users/${userId}`);
+  };
+
+  const handleLikeClick = async () => {
+    if (isLiked) {
+      await removeLike(user?.uid, imageId);
+      return;
+    }
+    await likeImage(user?.uid, imageId);
   };
 
   if (loading) {
@@ -74,13 +91,19 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           {image.email === "Unknown" ? (
             <p>{image.username === "Unknown" ? image.email : image.username}</p>
           ) : (
-            <Button
-              variant="outlined"
-              onClick={() => handleUserClick(image.userId)}
-            >
-              {image.username === "Unknown" ? image.email : image.username}
-            </Button>
+            <div className="flex gap-4 justify-center items-center">
+              <Button
+                variant="outlined"
+                onClick={() => handleUserClick(image.userId)}
+              >
+                {image.username === "Unknown" ? image.email : image.username}
+              </Button>
+              <Button variant="outlined" onClick={handleLikeClick}>
+                {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </Button>
+            </div>
           )}
+          <p className="text-md text-gray-500 pt-2">Likes: {likeCount}</p>
 
           <p className="text-md text-gray-500 pt-2">
             Uploaded at: {image.uploadedAt.toLocaleDateString()}

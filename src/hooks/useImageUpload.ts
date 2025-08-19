@@ -12,7 +12,7 @@ interface UseImageUploadReturn {
   uploading: boolean;
   uploadError: string | null;
   downloadURL: string | null;
-  handleUpload: () => Promise<void>;
+  handleUpload: (uniqueFilename: string) => Promise<void>;
   resetUploadState: () => void;
 }
 
@@ -32,50 +32,53 @@ export const useImageUpload = (): UseImageUploadReturn => {
     setDownloadURL(null);
   }, []);
 
-  const handleUpload = useCallback(async () => {
-    if (!db) {
-      console.warn("Firestore not initialized");
-      return;
-    }
-    if (!user || !ghostUser) {
-      setUploadError(
-        "You were not able to upload the image. You are not logged in or a anonymous user."
-      );
-      return;
-    }
-    const userId = user?.uid || ghostUser?.uid;
-    if (!selectedFile) {
-      setUploadError("Please choose a file to upload.");
-      return;
-    }
+  const handleUpload = useCallback(
+    async (uniqueFilename: string) => {
+      if (!db) {
+        console.warn("Firestore not initialized");
+        return;
+      }
+      if (!user || !ghostUser) {
+        setUploadError(
+          "You were not able to upload the image. You are not logged in or a anonymous user."
+        );
+        return;
+      }
+      const userId = user?.uid || ghostUser?.uid;
+      if (!selectedFile) {
+        setUploadError("Please choose a file to upload.");
+        return;
+      }
 
-    setUploading(true);
-    setUploadError(null);
-    setDownloadURL(null);
+      setUploading(true);
+      setUploadError(null);
+      setDownloadURL(null);
 
-    const filePath = `images/${userId}/${selectedFile.name}`;
-    const imageRef = ref(storage, filePath);
+      const filePath = `images/${userId}/${selectedFile.name}`;
+      const imageRef = ref(storage, filePath);
 
-    try {
-      const snapshot = await uploadBytes(imageRef, selectedFile);
-      const url = await getDownloadURL(snapshot.ref);
-      setDownloadURL(url);
-      await addDoc(collection(db, "images"), {
-        userId: userId,
-        imageUrl: url,
-        fileName: selectedFile.name,
-        uploadedAt: serverTimestamp(),
-        email: user?.email || "",
-        username: userInfo?.username || "",
-      });
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setUploadError(`Failed to upload: ${error}`);
-    } finally {
-      setUploading(false);
-      setSelectedFile(null);
-    }
-  }, [selectedFile, user, ghostUser, userInfo]);
+      try {
+        const snapshot = await uploadBytes(imageRef, selectedFile);
+        const url = await getDownloadURL(snapshot.ref);
+        setDownloadURL(url);
+        await addDoc(collection(db, "images"), {
+          userId: userId,
+          imageUrl: url,
+          fileName: uniqueFilename || selectedFile.name,
+          uploadedAt: serverTimestamp(),
+          email: user?.email || "",
+          username: userInfo?.username || "",
+        });
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        setUploadError(`Failed to upload: ${error}`);
+      } finally {
+        setUploading(false);
+        setSelectedFile(null);
+      }
+    },
+    [selectedFile, user, ghostUser, userInfo]
+  );
   return {
     selectedFile,
     setSelectedFile,

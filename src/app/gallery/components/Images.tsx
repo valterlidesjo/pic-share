@@ -3,13 +3,16 @@ import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { CommentCount } from "./CommentCount";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { LikeCount } from "./LikeCount";
 
 export const Images = ({
   images,
   showComments,
+  showLikes,
 }: {
   images: ImageProp[];
   showComments: boolean;
+  showLikes: boolean;
 }) => {
   const router = useRouter();
   return (
@@ -33,6 +36,7 @@ export const Images = ({
             <p className="text-sm font-semibold truncate">
               {formatFileNameForDisplay(image.fileName)}
             </p>
+            {showLikes && <LikeCount imageId={image.id} />}
             {showComments && <CommentCount imageId={image.id} />}
             <p className="text-xs text-gray-500">
               Uploaded: {image.uploadedAt.toLocaleDateString()}
