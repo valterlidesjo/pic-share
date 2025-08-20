@@ -20,7 +20,6 @@ const Profile = () => {
   const { user, loading } = useAuthGuard();
   const { userInfo } = useGetUserInfo();
   const [status, setStatus] = useState("");
-  const [, setRefresh] = useState(0);
 
   const { images } = useGetPersonalImages(user?.uid);
   const { followerCount } = useCheckFollowerCount(user?.uid);
@@ -33,7 +32,6 @@ const Profile = () => {
           ? "Email verified!"
           : "Still not verified. Please check your email."
       );
-      setRefresh((r) => r + 1);
     } else {
       console.log("No user found");
     }

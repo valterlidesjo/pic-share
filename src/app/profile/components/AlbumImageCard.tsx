@@ -1,8 +1,11 @@
 import { useGetImage } from "@/hooks/useGetImage";
-import { Timestamp } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
+import EditAlbumDialog from "./EditAlbumDialog";
+import useAuthGuard from "@/hooks/useAuthGuard";
+import { useGetAlbums } from "@/hooks/useGetAlbums";
+import { extractIdIntoArray } from "@/utils/extractIdIntoArray";
 
 const AlbumImageCard = ({
   imageId,
@@ -19,6 +22,10 @@ const AlbumImageCard = ({
 }) => {
   const { image } = useGetImage(imageId);
   const router = useRouter();
+  const { user } = useAuthGuard();
+  const { albums } = useGetAlbums(undefined, albumId);
+  const imageIdList = useMemo(() => extractIdIntoArray(albums), [albums]);
+
   if (!image) {
     return <div>Could not find image.</div>;
   }
@@ -45,6 +52,11 @@ const AlbumImageCard = ({
       <p className="text-xs text-gray-500">
         Uploaded: {createdAt.toLocaleDateString()}
       </p>
+      <EditAlbumDialog
+        albumId={albumId}
+        user={user}
+        initialImages={imageIdList}
+      />
     </div>
   );
 };

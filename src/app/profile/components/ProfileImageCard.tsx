@@ -1,4 +1,3 @@
-// src/components/ProfileImageCard.tsx
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";

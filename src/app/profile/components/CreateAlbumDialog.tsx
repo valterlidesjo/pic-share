@@ -61,7 +61,6 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
         title: title,
         createdAt: serverTimestamp(),
       });
-      console.log("Album created");
       const newAlbumId = newAlbumDocRef.id;
       return newAlbumId;
     } catch (error) {
@@ -90,7 +89,6 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
     try {
       await Promise.all(imagePromises);
       setAlbumMessage("The album is created with all the images.");
-      console.log("Images added in album");
     } catch (error) {
       setAlbumMessage(
         "The album and the images could not be set. Please try again."
@@ -138,8 +136,8 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
                 sx={{ marginBottom: "1rem" }}
               >
                 Please select all of the pictures you want in your album. You
-                can always update your album by adding or removing pictures from
-                it later on.
+                can max have 10 images in an album. You can always update your
+                album by adding or removing pictures from it later on.
               </DialogContentText>
               {images.map((image) => (
                 <ul
