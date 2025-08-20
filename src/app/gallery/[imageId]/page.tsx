@@ -26,7 +26,6 @@ interface ImagePageProps {
 
 const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
   const resolvedParams = use(params);
-  // const [isLiked, setIsLiked] = useState(false);
   const { imageId } = resolvedParams;
   const { comments } = useGetComments(imageId);
   const { user } = useAuthGuard();

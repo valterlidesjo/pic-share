@@ -12,6 +12,9 @@ import { checkAndUpdateEmailVerified } from "@/utils/verifyEmailAndUpdate";
 import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
 import useCheckFollowerCount from "@/hooks/useCheckFollowerCount";
 import EditAccountDialog from "./components/EditAccountDialog";
+import CreateAlbumDialog from "./components/CreateAlbumDialog";
+import { useGetAlbums } from "@/hooks/useGetAlbums";
+import AlbumImageCard from "./components/AlbumImageCard";
 
 const Profile = () => {
   const { user, loading } = useAuthGuard();
@@ -21,7 +24,7 @@ const Profile = () => {
 
   const { images } = useGetPersonalImages(user?.uid);
   const { followerCount } = useCheckFollowerCount(user?.uid);
-
+  const { albums } = useGetAlbums(user?.uid);
   const handleCheckVerification = async () => {
     if (user?.uid) {
       const updated = await checkAndUpdateEmailVerified(user?.uid);
@@ -57,8 +60,8 @@ const Profile = () => {
             Followers: {followerCount}
           </p>
           <p className="text-2xl pb-8">
-            Scroll down to browse all your uploaded images, add custom names,
-            edit and delete.
+            Scroll down to browse all your uploaded images, albums, add custom
+            names, edit and delete.
           </p>
           {!userInfo?.emailVerified && (
             <div className="flex flex-col justify-start items-center w-full">
@@ -103,11 +106,36 @@ const Profile = () => {
         {!userInfo?.username && (
           <UsernameDialog user={user} userInfo={userInfo} />
         )}
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl p-8">
-        {images.map((image) => (
-          <ProfileImageCard key={image.id} image={image} />
-        ))}
+        <div className="flex flex-col justify-center items-center gap-2 w-full sm:max-w-[512px] pt-4">
+          <p className="text-2xl w-full text-left">
+            Test out PicShare latest feature, <strong>Albums!</strong> <br />
+            Gather all your favorite pictures in an album.
+          </p>
+          {images.length > 0 && <CreateAlbumDialog user={user} />}
+        </div>
+        <p className="text-[#1976D2] text-2xl w-full text-left font-bold mt-8 mb-4">
+          Your Albums
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl pb-8">
+          {albums.map((album) => (
+            <AlbumImageCard
+              key={album.id}
+              title={album.title}
+              albumId={album.id}
+              imageId={album.images[0].imageId}
+              createdAt={album.createdAt}
+              showUser={false}
+            />
+          ))}
+        </div>
+        <p className="text-[#1976D2] text-2xl w-full text-left font-bold mt-8 mb-4">
+          Your Images
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl pb-8">
+          {images.map((image) => (
+            <ProfileImageCard key={image.id} image={image} />
+          ))}
+        </div>
       </div>
     </>
   );

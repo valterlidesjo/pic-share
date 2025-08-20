@@ -1,6 +1,7 @@
 import { useGetAllImages } from "@/hooks/useGetAllImages";
 import React from "react";
 import { Images } from "./Images";
+import { useGetAlbums } from "@/hooks/useGetAlbums";
 
 const GalleryContent = () => {
   const { images } = useGetAllImages();
@@ -12,7 +13,7 @@ const GalleryContent = () => {
         <div className="px-8 w-full text-2xl pb-8">
           <p className="mb-2">
             Welcome to the Gallery! This is the place to explore and find new
-            Pictures, users and comment!
+            pictures, users and comment!
           </p>
           <p>
             Click on a Picture that looks interesting to see more and comment

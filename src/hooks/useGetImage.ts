@@ -28,8 +28,8 @@ export const useGetImage = (imageId: string) => {
             imageUrl: data.imageUrl,
             fileName: data.fileName,
             uploadedAt: uploadedAtDate,
-            email: data.email || "Unknown",
-            username: data.username || "Unknown",
+            email: data.email,
+            username: data.username,
           });
         } else {
           setError("No image found");

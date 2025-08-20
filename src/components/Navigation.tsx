@@ -37,12 +37,6 @@ const Navigation: React.FC = () => {
     router.push(path);
   };
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    setDrawerOpen(false);
-    router.push("/");
-  };
-
   const menuOptions = isAnonymous
     ? [
         { label: "Home", path: "/" },
@@ -54,11 +48,11 @@ const Navigation: React.FC = () => {
     : [
         { label: "Home", path: "/" },
         { label: "Gallery", path: "/gallery" },
+        { label: "Albums", path: "/albums" },
         { label: "Feed", path: "/feed" },
         { label: "Users", path: "/users" },
         { label: "Upload", path: "/upload" },
         { label: "Profile", path: "/profile" },
-        { label: "Log Out", action: handleLogout },
       ];
 
   return (
@@ -115,27 +109,16 @@ const Navigation: React.FC = () => {
                   priority
                 />
               </div>
-              {menuOptions.map((option, idx) =>
-                option.action ? (
-                  <Button
-                    key={idx}
-                    color="inherit"
-                    onClick={option.action}
-                    sx={{ textTransform: "none", color: "#1976D2" }}
-                  >
-                    {option.label}
-                  </Button>
-                ) : (
-                  <Button
-                    key={idx}
-                    color="inherit"
-                    onClick={() => handleNav(option.path!)}
-                    sx={{ textTransform: "none", color: "#1976D2" }}
-                  >
-                    {option.label}
-                  </Button>
-                )
-              )}
+              {menuOptions.map((option, idx) => (
+                <Button
+                  key={idx}
+                  color="inherit"
+                  onClick={() => handleNav(option.path!)}
+                  sx={{ textTransform: "none", color: "#1976D2" }}
+                >
+                  {option.label}
+                </Button>
+              ))}
             </Box>
           )}
         </Toolbar>
@@ -146,21 +129,15 @@ const Navigation: React.FC = () => {
         onClose={() => setDrawerOpen(false)}
       >
         <List sx={{ width: 220 }}>
-          {menuOptions.map((option, idx) =>
-            option.action ? (
-              <ListItem component="button" key={idx} onClick={option.action}>
-                <ListItemText primary={option.label} />
-              </ListItem>
-            ) : (
-              <ListItem
-                component="button"
-                key={idx}
-                onClick={() => handleNav(option.path!)}
-              >
-                <ListItemText primary={option.label} />
-              </ListItem>
-            )
-          )}
+          {menuOptions.map((option, idx) => (
+            <ListItem
+              component="button"
+              key={idx}
+              onClick={() => handleNav(option.path!)}
+            >
+              <ListItemText primary={option.label} />
+            </ListItem>
+          ))}
         </List>
       </Drawer>
     </>
