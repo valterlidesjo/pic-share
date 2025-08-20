@@ -13,11 +13,13 @@ const AlbumImageCard = ({
   albumId,
   createdAt,
   showUser,
+  showEdit,
 }: {
   imageId: string;
   title: string;
   albumId: string;
   showUser: boolean;
+  showEdit: boolean;
   createdAt: Date;
 }) => {
   const { image } = useGetImage(imageId);
@@ -52,11 +54,13 @@ const AlbumImageCard = ({
       <p className="text-xs text-gray-500">
         Uploaded: {createdAt.toLocaleDateString()}
       </p>
-      <EditAlbumDialog
-        albumId={albumId}
-        user={user}
-        initialImages={imageIdList}
-      />
+      {showEdit && (
+        <EditAlbumDialog
+          albumId={albumId}
+          user={user}
+          initialImages={imageIdList}
+        />
+      )}
     </div>
   );
 };

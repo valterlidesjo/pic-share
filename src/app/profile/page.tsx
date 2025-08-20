@@ -123,6 +123,7 @@ const Profile = () => {
               imageId={album.images[0].imageId}
               createdAt={album.createdAt}
               showUser={false}
+              showEdit={true}
             />
           ))}
         </div>

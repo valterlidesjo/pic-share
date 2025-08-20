@@ -19,6 +19,7 @@ const Albums = () => {
               imageId={album.images[0].imageId}
               createdAt={album.createdAt}
               showUser={true}
+              showEdit={false}
             />
           ))}{" "}
         </div>
