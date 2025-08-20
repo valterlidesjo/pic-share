@@ -1,7 +1,6 @@
 import { useGetAllImages } from "@/hooks/useGetAllImages";
 import React from "react";
 import { Images } from "./Images";
-import { useGetAlbums } from "@/hooks/useGetAlbums";
 
 const GalleryContent = () => {
   const { images } = useGetAllImages();

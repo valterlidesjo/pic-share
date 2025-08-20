@@ -12,8 +12,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/hooks/useAuthGuard";
-import { signOut } from "firebase/auth";
-import { auth } from "@/firebaseConfig";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";

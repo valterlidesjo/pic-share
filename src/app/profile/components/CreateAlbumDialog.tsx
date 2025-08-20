@@ -90,6 +90,7 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
       await Promise.all(imagePromises);
       setAlbumMessage("The album is created with all the images.");
     } catch (error) {
+      console.error("The album and the images could not be set: ", error);
       setAlbumMessage(
         "The album and the images could not be set. Please try again."
       );
@@ -186,7 +187,8 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
                 An album is a great way to gather your images from a trip, of
-                your friend's or family or anything that is important to you!
+                your friend&apos;s or family or anything that is important to
+                you!
                 <br />
                 Please start with naming your album.
               </DialogContentText>
