@@ -24,8 +24,7 @@ export default function Home() {
             />
           </div>
           <p className="text-2xl px-8 w-full py-8">
-            Start browsing and sign up right away to rid all of your FOMO and
-            see why all your friends are hyping{" "}
+            Sign up right away to find out why all your friends are hyping{" "}
             <span className="text-[#1976D2] font-bold">PicShare</span>
           </p>
           <Button
@@ -36,9 +35,22 @@ export default function Home() {
               height: "60px",
               fontSize: "1.5rem",
               color: "#E38724",
+              marginBottom: "1rem",
             }}
           >
             Sign Up
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => router.push("/sign-in")}
+            sx={{
+              width: "50%",
+              height: "60px",
+              fontSize: "1.5rem",
+              color: "#E38724",
+            }}
+          >
+            Sign In
           </Button>
         </div>
       </div>
