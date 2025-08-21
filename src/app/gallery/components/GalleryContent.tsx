@@ -18,6 +18,7 @@ const GalleryContent = () => {
             Click on a Picture that looks interesting to see more and comment
           </p>
         </div>
+
         <Images images={images} showComments={true} showLikes={true} />
       </div>
     </>
