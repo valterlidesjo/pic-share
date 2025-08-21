@@ -17,6 +17,7 @@ import { likeImage } from "@/utils/likeImage";
 import useCheckIfImageIsLiked from "@/hooks/useCheckIfImageIsLiked";
 import { removeLike } from "@/utils/removeLike";
 import useCheckLikeCount from "@/hooks/useCheckLikeCount";
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 
 interface ImagePageProps {
   params: Promise<{
@@ -104,6 +105,9 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           )}
           <p className="text-md text-gray-500 pt-2">Likes: {likeCount}</p>
 
+          <p className="text-md pt-2">
+            {capitalizeFirstLetter(image.category)}
+          </p>
           <p className="text-md text-gray-500 pt-2">
             Uploaded at: {image.uploadedAt.toLocaleDateString()}
           </p>

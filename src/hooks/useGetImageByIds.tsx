@@ -35,6 +35,7 @@ export const useGetImagesByIds = (imageIds: string[]) => {
           imageUrl: data.imageUrl,
           fileName: data.fileName,
           uploadedAt: uploadedAtDate,
+          category: data.category,
           email: data.email,
           username: data.username,
         };

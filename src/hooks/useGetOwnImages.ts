@@ -35,6 +35,7 @@ export const useGetPersonalImages = (userId: string | undefined) => {
             imageUrl: data.imageUrl,
             fileName: data.fileName,
             uploadedAt: uploadedAtDate,
+            category: data.category,
             email: data.email,
           } as Image;
         });

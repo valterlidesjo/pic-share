@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import Image from "next/image";
 import { useGhostGuard } from "@/hooks/useGhostGuard";
 import TextField from "@mui/material/TextField";
+import { runCategoryPrompt } from "@/utils/categoryPrompt";
 
 const Upload = () => {
   const [uniqueFilename, setUniqueFilename] = useState<string>("");
@@ -24,6 +25,16 @@ const Upload = () => {
     }
   };
 
+  const handleUploadClick = async () => {
+    const category = await runCategoryPrompt();
+    if (category) {
+      handleUpload(uniqueFilename, category);
+    } else {
+      console.log("Could not find category.");
+    }
+    setUniqueFilename("");
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center items-center px-8 gap-4">
@@ -32,6 +43,7 @@ const Upload = () => {
           type="file"
           className="cursor-pointer border p-2 w-full"
           onChange={handleFileChange}
+          id="promt-input"
         />
         <TextField
           id="filename"
@@ -41,7 +53,9 @@ const Upload = () => {
         />
         <Button
           variant="outlined"
-          onClick={() => handleUpload(uniqueFilename)}
+          onClick={() => {
+            handleUploadClick();
+          }}
           disabled={!selectedFile || uploading}
           className="text-black"
         >
@@ -51,7 +65,7 @@ const Upload = () => {
 
       {uploadError && <p className="text-red-600">{uploadError}</p>}
       {downloadURL && (
-        <div>
+        <div className="flex flex-col justify-center items-center px-8 gap-4">
           <p>Image uploaded successfully!</p>
           <div className="relative max-w-full h-auto mt-4 px-8">
             <Image

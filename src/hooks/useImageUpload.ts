@@ -12,7 +12,7 @@ interface UseImageUploadReturn {
   uploading: boolean;
   uploadError: string | null;
   downloadURL: string | null;
-  handleUpload: (uniqueFilename: string) => Promise<void>;
+  handleUpload: (uniqueFilename: string, category: string) => Promise<void>;
   resetUploadState: () => void;
 }
 
@@ -33,7 +33,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
   }, []);
 
   const handleUpload = useCallback(
-    async (uniqueFilename: string) => {
+    async (uniqueFilename: string, category: string) => {
       if (!db) {
         console.warn("Firestore not initialized");
         return;
@@ -65,6 +65,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
           userId: userId,
           imageUrl: url,
           fileName: uniqueFilename || selectedFile.name,
+          category: category,
           uploadedAt: serverTimestamp(),
           email: user?.email || "",
           username: userInfo?.username || "",

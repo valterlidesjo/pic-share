@@ -24,6 +24,7 @@ const Profile = () => {
   const { images } = useGetPersonalImages(user?.uid);
   const { followerCount } = useCheckFollowerCount(user?.uid);
   const { albums } = useGetAlbums(user?.uid);
+
   const handleCheckVerification = async () => {
     if (user?.uid) {
       const updated = await checkAndUpdateEmailVerified(user?.uid);
@@ -36,6 +37,7 @@ const Profile = () => {
       console.log("No user found");
     }
   };
+
   const handleResendVerification = async () => {
     if (auth.currentUser) {
       await sendEmailVerification(auth.currentUser);

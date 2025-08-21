@@ -1,8 +1,18 @@
-// Import the functions you need from the SDKs you need
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import {
+  AI,
+  GenerativeModel,
+  getAI,
+  getGenerativeModel,
+  GoogleAIBackend,
+} from "firebase/ai";
+import {
+  initializeAppCheck,
+  ReCaptchaEnterpriseProvider,
+} from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "dummy-key-for-build",
@@ -19,18 +29,30 @@ let app: any = null;
 let auth: any = null;
 let db: any = null;
 let storage: any = null;
+let ai: AI;
+let model: GenerativeModel;
+let appCheck;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 if (
   typeof window !== "undefined" &&
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 ) {
   try {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
+    ai = getAI(app, { backend: new GoogleAIBackend() });
+    appCheck = initializeAppCheck(app, {
+      provider: new ReCaptchaEnterpriseProvider(
+        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+      ),
+      isTokenAutoRefreshEnabled: true,
+    });
+    model = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
   } catch (error) {
     console.log("Could not initialize firebase: ", error);
   }
@@ -38,4 +60,18 @@ if (
   console.log("❌ Firebase initialization skipped - missing requirements");
 }
 
-export { db, auth, storage };
+// async function run() {
+//   // Provide a prompt that contains text
+//   const prompt = "Write a story about a magic backpack.";
+
+//   // To generate text output, call generateContent with the text input
+//   const result = await model.generateContent(prompt);
+
+//   const response = result.response;
+//   const text = response.text();
+//   console.log(text);
+// }
+
+// run();
+
+export { db, auth, storage, model, appCheck };

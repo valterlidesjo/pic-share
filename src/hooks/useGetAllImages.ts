@@ -13,6 +13,7 @@ export type Image = {
   id: string;
   userId: string;
   imageUrl: string;
+  category: string;
   fileName: string;
   uploadedAt: Date;
   email: string;
@@ -45,6 +46,7 @@ export const useGetAllImages = () => {
             userId: data.userId,
             imageUrl: data.imageUrl,
             fileName: data.fileName,
+            category: data.category,
             uploadedAt: uploadedAtDate,
             email: data.email,
             username: data.username,

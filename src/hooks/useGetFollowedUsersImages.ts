@@ -30,6 +30,7 @@ const useGetFollowedUsersImages = (followedIds: string[]) => {
             imageUrl: data.imageUrl,
             fileName: data.fileName,
             uploadedAt: uploadedAtDate,
+            category: data.category,
             email: data.email,
             username: data.username,
           } as Image;
