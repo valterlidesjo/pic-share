@@ -28,7 +28,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navigation />
-        <div className="w-full h-[80px]"></div>
         {children}
       </body>
     </html>

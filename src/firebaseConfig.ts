@@ -42,16 +42,16 @@ if (
 ) {
   try {
     app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-    storage = getStorage(app);
-    ai = getAI(app, { backend: new GoogleAIBackend() });
     appCheck = initializeAppCheck(app, {
       provider: new ReCaptchaEnterpriseProvider(
         process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
       ),
       isTokenAutoRefreshEnabled: true,
     });
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    ai = getAI(app, { backend: new GoogleAIBackend() });
     model = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
   } catch (error) {
     console.log("Could not initialize firebase: ", error);
@@ -59,19 +59,5 @@ if (
 } else {
   console.log("❌ Firebase initialization skipped - missing requirements");
 }
-
-// async function run() {
-//   // Provide a prompt that contains text
-//   const prompt = "Write a story about a magic backpack.";
-
-//   // To generate text output, call generateContent with the text input
-//   const result = await model.generateContent(prompt);
-
-//   const response = result.response;
-//   const text = response.text();
-//   console.log(text);
-// }
-
-// run();
 
 export { db, auth, storage, model, appCheck };

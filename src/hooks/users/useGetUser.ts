@@ -1,7 +1,7 @@
 import { db } from "@/firebaseConfig";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { User } from "./useGetVerifiedUsers";
+import { User } from "../users/useGetVerifiedUsers";
 
 type FirestoreUser = Omit<User, "createdAt"> & {
   createdAt: Timestamp;
@@ -9,6 +9,7 @@ type FirestoreUser = Omit<User, "createdAt"> & {
 
 const useGetUser = (userId: string) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userId || !db) {
@@ -36,11 +37,13 @@ const useGetUser = (userId: string) => {
         }
       } catch (error) {
         console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
   }, [userId]);
-  return { user };
+  return { user, loading };
 };
 
 export default useGetUser;

@@ -1,4 +1,4 @@
-import { Image as ImageProp } from "@/hooks/useGetAllImages";
+import { Image as ImageProp } from "@/hooks/images/useGetAllImages";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { CommentCount } from "./CommentCount";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,15 @@ export const Images = ({
   showLikes: boolean;
 }) => {
   const router = useRouter();
+  if (images.length < 1) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <p className="text-2xl font-bold">
+          Could unfortunately not load any pictures.
+        </p>
+      </div>
+    );
+  }
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl px-8 cursor-pointer">

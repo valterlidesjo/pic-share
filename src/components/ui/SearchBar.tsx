@@ -10,7 +10,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { Hits, useSearchBox } from "react-instantsearch";
 
-import { User } from "@/hooks/useGetVerifiedUsers";
+import { User } from "@/hooks/users/useGetVerifiedUsers";
 import { useRouter } from "next/navigation";
 
 const SearchBar = ({ text }: { text: string }) => {

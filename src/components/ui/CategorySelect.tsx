@@ -1,23 +1,35 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 
-const CategorySelect = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+type CategorySelectProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+const CategorySelect: React.FC<CategorySelectProps> = ({ value, onChange }) => {
   return (
-    <FormControl fullWidth>
-      <InputLabel id="demo-simple-select-label">Age</InputLabel>
+    <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
+      <InputLabel>Category</InputLabel>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={selectedCategory}
+        value={value}
         label="Category"
         onChange={(e) => {
-          setSelectedCategory(e.target.value);
+          onChange(e.target.value);
         }}
       >
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        <MenuItem value={"all"}>All categories</MenuItem>
+        <MenuItem value={"friends and family"}>Friends and family</MenuItem>
+        <MenuItem value={"food and drinks"}>Food and drinks</MenuItem>
+        <MenuItem value={"sports"}>Sports</MenuItem>
+        <MenuItem value={"work and tech"}>Work and tech</MenuItem>
+        <MenuItem value={"travel and vacation"}>Travel and vacation</MenuItem>
+        <MenuItem value={"animals"}>Animals</MenuItem>
+        <MenuItem value={"nature"}>Nature</MenuItem>
+        <MenuItem value={"hobbies"}>Hobbies</MenuItem>
+        <MenuItem value={"events and celebrations"}>
+          Events and celebrations
+        </MenuItem>
+        <MenuItem value={"art and architecture"}>Art and architecture</MenuItem>
       </Select>
     </FormControl>
   );

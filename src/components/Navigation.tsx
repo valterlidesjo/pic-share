@@ -11,11 +11,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
-import useAuthGuard from "@/hooks/useAuthGuard";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
-import { useGhostGuard } from "@/hooks/useGhostGuard";
+import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
 
 const Navigation: React.FC = () => {
   const ghostGuard = useGhostGuard();
@@ -25,7 +25,11 @@ const Navigation: React.FC = () => {
   const isDesktop = useMediaQuery("(min-width:640px)");
 
   if (loading || ghostGuard.loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-[60px] flex justify-center items-center text-[#1976D2] font-bold text-lg">
+        Loading...
+      </div>
+    );
   }
   const currentUser = user || ghostGuard.user;
   const isAnonymous = currentUser?.isAnonymous ?? true;
@@ -38,8 +42,6 @@ const Navigation: React.FC = () => {
   const menuOptions = isAnonymous
     ? [
         { label: "Home", path: "/" },
-        { label: "Gallery", path: "/gallery" },
-        { label: "Upload", path: "/upload" },
         { label: "Sign In", path: "/sign-in" },
         { label: "Sign Up", path: "/sign-up" },
       ]

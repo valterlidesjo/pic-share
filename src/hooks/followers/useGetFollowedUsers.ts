@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { User } from "./useGetVerifiedUsers";
+import { User } from "../users/useGetVerifiedUsers";
 
 export type FollowedUsers = {
   id: string;

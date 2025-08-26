@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { User } from "@/hooks/useGetVerifiedUsers";
+import { User } from "@/hooks/users/useGetVerifiedUsers";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export const searchUser = async (searchTerm: string) => {

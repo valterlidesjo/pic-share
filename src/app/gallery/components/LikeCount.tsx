@@ -1,4 +1,4 @@
-import useCheckLikeCount from "@/hooks/useCheckLikeCount";
+import useCheckLikeCount from "@/hooks/likes/useCheckLikeCount";
 import React, { useEffect, useState } from "react";
 
 export const LikeCount = ({ imageId }: { imageId: string }) => {

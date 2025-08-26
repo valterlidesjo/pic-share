@@ -1,15 +1,16 @@
 import { db, storage } from "@/firebaseConfig";
-import useAuthGuard from "@/hooks/useAuthGuard";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useCallback, useState } from "react";
-import useGetUserInfo from "./useGetUserInfo";
-import { useGhostGuard } from "./useGhostGuard";
+import useGetUserInfo from "../users/useGetUserInfo";
+import { useGhostGuard } from "../auth/useGhostGuard";
 
 interface UseImageUploadReturn {
   selectedFile: File | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
   uploading: boolean;
+  loading: boolean;
   uploadError: string | null;
   downloadURL: string | null;
   handleUpload: (uniqueFilename: string, category: string) => Promise<void>;
@@ -19,6 +20,7 @@ interface UseImageUploadReturn {
 export const useImageUpload = (): UseImageUploadReturn => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [loading, setloading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
   const { user } = useAuthGuard();
@@ -34,6 +36,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
 
   const handleUpload = useCallback(
     async (uniqueFilename: string, category: string) => {
+      setloading(true);
       if (!db) {
         console.warn("Firestore not initialized");
         return;
@@ -75,6 +78,8 @@ export const useImageUpload = (): UseImageUploadReturn => {
         setUploadError(`Failed to upload: ${error}`);
       } finally {
         setUploading(false);
+        setloading(false);
+
         setSelectedFile(null);
       }
     },
@@ -84,6 +89,7 @@ export const useImageUpload = (): UseImageUploadReturn => {
     selectedFile,
     setSelectedFile,
     uploading,
+    loading,
     uploadError,
     downloadURL,
     handleUpload,

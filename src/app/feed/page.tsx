@@ -1,11 +1,11 @@
 "use client";
-import useAuthGuard from "@/hooks/useAuthGuard";
-import useGetFollowedUsers from "@/hooks/useGetFollowedUsers";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
+import useGetFollowedUsers from "@/hooks/followers/useGetFollowedUsers";
 import React, { useMemo } from "react";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import { Images } from "../gallery/components/Images";
-import useGetFollowedUsersImages from "@/hooks/useGetFollowedUsersImages";
+import useGetFollowedUsersImages from "@/hooks/images/useGetFollowedUsersImages";
 
 const Feed = () => {
   const { user } = useAuthGuard();
@@ -32,12 +32,9 @@ const Feed = () => {
   }
   return (
     <>
-      <div className="w-full flex flex-col justify-center items-center px-8">
+      <div className="w-full flex flex-col justify-center items-center px-8 mt-[60px]">
         <h1 className="text-[#1976D2] font-bold text-2xl">Feed</h1>
-        <p className="w-full text-2xl pb-8">
-          Welcome to the Feed! This is the place to see all the pictures
-          uploaded from people you follow!
-        </p>
+        <p className="text-lg mb-4">Pictures from the people you follow!</p>
       </div>
       <Images
         images={followedUsersImages}

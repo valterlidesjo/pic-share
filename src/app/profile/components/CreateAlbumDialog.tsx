@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,7 +17,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { User } from "firebase/auth";
-import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
+import { useGetPersonalImages } from "@/hooks/images/useGetOwnImages";
 import Image from "next/image";
 
 const Transition = React.forwardRef<
@@ -154,7 +155,9 @@ const CreateAlbumDialog = ({ user }: { user: User | null | undefined }) => {
                       <CheckBoxOutlineBlankIcon />
                     </div>
                   )}
-                  <li>{image.fileName}</li>
+                  <li className="max-w-[160px] truncate ...">
+                    {image.fileName}
+                  </li>
                   <div className="relative w-[50px] h-[50px]">
                     <Image
                       src={image.imageUrl}

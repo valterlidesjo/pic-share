@@ -1,27 +1,34 @@
 "use client";
-import useAuthGuard from "@/hooks/useAuthGuard";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import React from "react";
-import GuestGalleryContent from "./components/GuestGalleryContent";
 import GalleryContent from "./components/GalleryContent";
-import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
-import { useGhostGuard } from "@/hooks/useGhostGuard";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { CircularProgress } from "@mui/material";
 
 const Gallery = () => {
-  useGhostGuard();
   const { user, loading } = useAuthGuard();
-  const { images } = useGetPersonalImages(user?.uid);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full flex justify-center items-center pt-8 mt-[60px]">
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (!user) {
     return <div>Could not find user</div>;
   }
-  if (user?.isAnonymous) {
-    return <GuestGalleryContent ownImages={images} />;
-  }
+
   return <GalleryContent />;
 };
 
-export default Gallery;
+const GalleryPage: React.FC = () => {
+  return (
+    <ProtectedRoute>
+      <Gallery />
+    </ProtectedRoute>
+  );
+};
+
+export default GalleryPage;
