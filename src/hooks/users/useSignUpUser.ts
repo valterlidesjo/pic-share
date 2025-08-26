@@ -4,7 +4,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { useState } from "react";
-import { useGhostGuard } from "./useGhostGuard";
+import { useGhostGuard } from "../auth/useGhostGuard";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
@@ -47,7 +47,7 @@ export const useSignUpUser = () => {
       if (auth.currentUser) {
         await sendEmailVerification(auth.currentUser);
         setMessage(
-          "Account created successfully! Please verify your email to continue. Remember to check your spam inbox."
+          "Account created successfully, you can now sign in! Verify your email to become a verified member. Remember to check your spam inbox."
         );
       } else {
         setMessage(

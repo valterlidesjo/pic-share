@@ -1,5 +1,6 @@
 "use client";
-import useAuthGuard from "@/hooks/useAuthGuard";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
+import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -20,10 +21,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [user, loading, router]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
+        <CircularProgress />
+      </div>
+    );
   }
   if (!user) {
-    return null;
+    return <div>Could not find user</div>;
   }
   return <>{children}</>;
 };

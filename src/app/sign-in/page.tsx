@@ -5,7 +5,7 @@ import { auth } from "@/firebaseConfig";
 import { useRouter } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { checkUserDoc } from "@/utils/checkUserDoc";
-import { useGhostGuard } from "@/hooks/useGhostGuard";
+import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
 
 const SignIn = () => {
   const [email, setEmail] = React.useState("");
@@ -32,7 +32,7 @@ const SignIn = () => {
   };
   return (
     <>
-      <div className="flex items-start justify-center h-screen pt-12 bg-gray-100">
+      <div className="flex items-start justify-center h-screen pt-12 bg-gray-100 mt-[60px]">
         <div className="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-md w-96">
           <h2 className="text-2xl font-bold mb-6 text-center text-[#1976D2]">
             Sign In

@@ -1,24 +1,32 @@
-import { useGetAllImages } from "@/hooks/useGetAllImages";
-import React from "react";
+import { useGetAllImages } from "@/hooks/images/useGetAllImages";
+import React, { useState } from "react";
 import { Images } from "./Images";
+import CategorySelect from "@/components/ui/CategorySelect";
+import useGetCategorizedImages from "@/hooks/images/useGetCategorizedImages";
 
 const GalleryContent = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { images } = useGetAllImages();
+  const { categorizedImages } = useGetCategorizedImages(selectedCategory);
+
+  const imagesToShow =
+    !selectedCategory || selectedCategory === "all"
+      ? images
+      : categorizedImages;
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center mt-[60px]">
         <h1 className="text-[#1976D2] font-bold text-2xl">Gallery</h1>
-        <div className="px-8 w-full text-2xl pb-8">
-          <p className="mb-2">
-            Welcome to the Gallery! This is the place to explore and find new
-            pictures, users and comment!
-          </p>
-          <p>
-            Click on a Picture that looks interesting to see more and comment
-          </p>
+        <div className="flex w-full justify-start items-center px-8 max-w-5xl">
+          <div className="w-[15rem]">
+            <CategorySelect
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+            />
+          </div>
         </div>
-        <Images images={images} showComments={true} showLikes={true} />
+        <Images images={imagesToShow} showComments={true} showLikes={true} />
       </div>
     </>
   );

@@ -1,6 +1,6 @@
-import { Album } from "@/hooks/useGetAlbums";
+import { Album } from "@/hooks/albums/useGetAlbums";
 
-export const extractIdIntoArray = (albums: Album[]) => {
+export const extractAlbumIdIntoArray = (albums: Album[]) => {
   const imageIdList: string[] = [];
   albums.map((album) => {
     album.images.map((image) => {

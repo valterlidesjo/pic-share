@@ -26,7 +26,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { User as UserProps } from "firebase/auth";
-import { useGetPersonalImages } from "@/hooks/useGetOwnImages";
+import { useGetPersonalImages } from "@/hooks/images/useGetOwnImages";
 import Image from "next/image";
 
 const Transition = React.forwardRef<
@@ -164,31 +164,75 @@ const EditAlbumDialog = ({
                 of the album, add images and remove images.
               </DialogContentText>
             </DialogContent>
-            <DialogActions>
-              <Button variant="outlined" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={() => setIsDeleting(!isDeleting)}
-              >
-                Delete
-              </Button>
-
-              <Button
-                variant="outlined"
-                onClick={() => setIsEditingTitle(true)}
-              >
-                Edit title
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => setIsEditingImages(true)}
-              >
-                Edit images
-              </Button>
+            <DialogActions
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                sm: {
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "start",
+                  alignItems: "center",
+                  paddingLeft: "1.5rem",
+                },
+              }}
+            >
+              <div className="flex justify-center items-center gap-4 w-full mb-2 sm:hidden">
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsEditingTitle(true)}
+                >
+                  Edit title
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsEditingImages(true)}
+                >
+                  Edit images
+                </Button>
+              </div>
+              <div className="flex justify-center items-center gap-4 w-full sm:hidden">
+                <Button variant="outlined" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => setIsDeleting(!isDeleting)}
+                >
+                  Delete
+                </Button>
+              </div>
+              <div className="hidden sm:flex sm:justify-center sm:items-center sm:gap-2">
+                <Button
+                  variant="outlined"
+                  onClick={() => setOpen(false)}
+                  className="hidden sm:block"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => setIsDeleting(!isDeleting)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsEditingTitle(true)}
+                >
+                  Edit title
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsEditingImages(true)}
+                >
+                  Edit images
+                </Button>
+              </div>
             </DialogActions>
             <DialogContent>
               {isDeleting && (
@@ -322,7 +366,7 @@ const EditAlbumDialog = ({
           </>
         )}
       </Dialog>
-      {updateMessage && <p>{updateMessage}</p>}
+      {updateMessage && <p className="mt-2">{updateMessage}</p>}
     </>
   );
 };

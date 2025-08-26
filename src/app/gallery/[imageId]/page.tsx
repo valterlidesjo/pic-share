@@ -7,17 +7,18 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { addCommentToImage } from "@/utils/addCommentToImage";
-import useGetComments from "@/hooks/useGetComments";
-import useAuthGuard from "@/hooks/useAuthGuard";
+import useGetComments from "@/hooks/comments/useGetComments";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useRouter } from "next/navigation";
 import { ImageComments } from "../components/ImageComments";
-import { useGetImage } from "@/hooks/useGetImage";
+import { useGetImage } from "@/hooks/images/useGetImage";
 import Image from "next/image";
 import { likeImage } from "@/utils/likeImage";
-import useCheckIfImageIsLiked from "@/hooks/useCheckIfImageIsLiked";
+import useCheckIfImageIsLiked from "@/hooks/likes/useCheckIfImageIsLiked";
 import { removeLike } from "@/utils/removeLike";
-import useCheckLikeCount from "@/hooks/useCheckLikeCount";
+import useCheckLikeCount from "@/hooks/likes/useCheckLikeCount";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
+import { CircularProgress } from "@mui/material";
 
 interface ImagePageProps {
   params: Promise<{
@@ -52,35 +53,35 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Loading image...</p>
+      <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
+        <CircularProgress />
       </div>
     );
   }
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
-        <p>Fel: {error}</p>
+      <div className="flex justify-center items-center h-screen text-red-500 mt-[60px]">
+        <p>Error: {error}</p>
       </div>
     );
   }
 
   if (!image) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Ingen bild att visa.</p>
+      <div className="flex justify-center items-center h-screen mt-[60px]">
+        <p>No image to show.</p>
       </div>
     );
   }
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center px-8">
+      <div className="flex flex-col items-center justify-center px-8 mt-[60px]">
         <div className="flex flex-col items-center justify-center w-full pt-8">
-          <h1 className="text-2xl font-bold mb-4">
+          <p className="text-2xl font-bold mb-4 break-words max-w-[80%]">
             {formatFileNameForDisplay(image.fileName)}
-          </h1>
-          <div className="relative w-full aspect-video h-auto mb-4">
+          </p>
+          <div className="relative w-full aspect-video h-auto mb-4 sm:max-h-[70vh]">
             <Image
               src={image.imageUrl}
               alt={image.fileName || ""}
@@ -88,21 +89,22 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
               className="object-contain rounded-lg"
             />
           </div>
-          {image.email === "Unknown" ? (
-            <p>{image.username === "Unknown" ? image.email : image.username}</p>
-          ) : (
-            <div className="flex gap-4 justify-center items-center">
-              <Button
-                variant="outlined"
-                onClick={() => handleUserClick(image.userId)}
-              >
-                {image.username === "Unknown" ? image.email : image.username}
-              </Button>
-              <Button variant="outlined" onClick={handleLikeClick}>
-                {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-              </Button>
+          <div className="flex gap-4 justify-center items-center">
+            <Button
+              variant="outlined"
+              onClick={() => handleUserClick(image.userId)}
+            >
+              {image.username ? image.username : image.email}
+            </Button>
+            <div onClick={handleLikeClick}>
+              {isLiked ? (
+                <FavoriteIcon sx={{ color: "red", fontSize: "2rem" }} />
+              ) : (
+                <FavoriteBorderIcon sx={{ fontSize: "2rem" }} />
+              )}
             </div>
-          )}
+          </div>
+          {/* )} */}
           <p className="text-md text-gray-500 pt-2">Likes: {likeCount}</p>
 
           <p className="text-md pt-2">
@@ -112,7 +114,7 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
             Uploaded at: {image.uploadedAt.toLocaleDateString()}
           </p>
         </div>
-        <ImageComments comments={comments} />
+        <ImageComments comments={comments} imageId={imageId} />
 
         <div className="flex flex-col gap-2 w-full pb-8">
           <TextField
@@ -128,7 +130,13 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           <Button
             variant="outlined"
             onClick={() => {
-              addCommentToImage(imageId, image.userId, userEmail, imageComment);
+              addCommentToImage(
+                imageId,
+                image.userId,
+                user?.uid,
+                userEmail,
+                imageComment
+              );
               setImageComment("");
             }}
             sx={{

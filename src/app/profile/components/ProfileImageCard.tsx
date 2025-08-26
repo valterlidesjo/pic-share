@@ -8,16 +8,22 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { updateFileName, deleteImage } from "@/utils/imageFunctions";
 import Image from "next/image";
-import { Image as ImageProps } from "@/hooks/useGetAllImages";
+import { Image as ImageProps } from "@/hooks/images/useGetAllImages";
+import { useRouter } from "next/navigation";
 
 const ProfileImageCard = ({ image }: { image: ImageProps }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedFileName, setEditedFileName] = useState("");
 
+  const router = useRouter();
+
   return (
     <div className="border p-2 rounded-lg shadow-md mb-8">
-      <div className="relative w-full h-48 mb-2">
+      <div
+        className="relative w-full h-48 mb-2"
+        onClick={() => router.push(`/gallery/${image.id}`)}
+      >
         <Image
           src={image.imageUrl}
           alt={image.fileName || "Galleri Bild"}

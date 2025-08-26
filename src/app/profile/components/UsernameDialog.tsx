@@ -14,7 +14,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { User } from "firebase/auth";
-import { UserInfo } from "@/hooks/useGetUserInfo";
+import { UserInfo } from "@/hooks/users/useGetUserInfo";
 
 const Transition = React.forwardRef<
   unknown,

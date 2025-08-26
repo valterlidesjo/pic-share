@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import useGetVerifiedUsers from "@/hooks/useGetVerifiedUsers";
+import useGetVerifiedUsers from "@/hooks/users/useGetVerifiedUsers";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import AlgoliaSearch from "@/components/AlgoliaSearch";
@@ -16,16 +16,16 @@ const Users = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center px-8">
+      <div className="flex flex-col justify-center items-center px-8 mt-[60px]">
         <h1 className="text-[#1976D2] font-bold text-2xl">Profile</h1>
 
-        <div className="w-full flex items-center justify-center gap-4">
+        <div className="w-full flex items-center justify-center gap-4 max-w-5xl">
           <AlgoliaSearch />
         </div>
-        <h1 className="w-full flex items-center justify-center text-lg">
+        <p className="w-full flex items-center justify-center text-2xl font-bold mt-8 mb-4">
           Check out our verified users
-        </h1>
-        <div className="w-full flex flex-wrap items-center justify-center gap-2 px-4 md:px-8 lg:px-12">
+        </p>
+        <div className="w-full flex flex-wrap items-center justify-start gap-2 max-w-5xl">
           {users &&
             users.map((user) => (
               <Button

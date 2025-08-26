@@ -10,6 +10,7 @@ export const useGetImage = (imageId: string) => {
   useEffect(() => {
     if (!imageId || !db) {
       setImage(null);
+      setLoading(false);
       return;
     }
     const fetchImage = async () => {
@@ -34,10 +35,12 @@ export const useGetImage = (imageId: string) => {
           });
         } else {
           setError("No image found");
+          setLoading(false);
         }
       } catch (err) {
         console.error("Error fetching image:", err);
         setError("Could not load image");
+        setLoading(false);
       } finally {
         setLoading(false);
       }
