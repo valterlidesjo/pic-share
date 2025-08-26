@@ -55,7 +55,7 @@ const CommentItem = ({
     if (user?.email === comment.email) {
       setIsOwnComment(true);
     }
-  }, [userIdsList]);
+  }, [userIdsList, comment.email, user?.email]);
 
   const handleCheckIfCommentIsLiked = (userId: string | undefined) => {
     if (!userId) {

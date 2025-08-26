@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const useCheckCommentCommentCount = (

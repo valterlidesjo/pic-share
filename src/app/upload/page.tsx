@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { useImageUpload } from "@/hooks/images/useImageUpload";
-import Image from "next/image";
 import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
 import TextField from "@mui/material/TextField";
 import { runCategoryPrompt } from "@/utils/categoryPrompt";

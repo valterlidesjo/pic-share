@@ -37,7 +37,9 @@ const AlbumImageCard = ({
       </div>
     );
   }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { image, loading } = useGetImage(album.images[0].imageId);
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   if (!image || loading || albumLoading) {
     return (
