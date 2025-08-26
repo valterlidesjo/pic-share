@@ -8,7 +8,14 @@ import {
   where,
 } from "firebase/firestore";
 
-export const unfollowUser = async (userId: string, followedUserId: string) => {
+export const unfollowUser = async (
+  userId: string | undefined,
+  followedUserId: string
+) => {
+  if (!userId || !followedUserId) {
+    console.error("Could not follow user, no userId or followedUserId");
+    return;
+  }
   try {
     const q = query(
       collection(db, "followers"),

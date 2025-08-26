@@ -19,6 +19,8 @@ import { useGetAlbums } from "@/hooks/albums/useGetAlbums";
 import AlbumImageCard from "./components/AlbumImageCard";
 import { deleteAccount } from "@/utils/deleteAccount";
 import { useRouter } from "next/navigation";
+import Followers from "./components/Followers";
+import Follows from "./components/Follows";
 
 const Profile = () => {
   const { user, loading } = useAuthGuard();
@@ -69,18 +71,8 @@ const Profile = () => {
             </strong>
           </p>
           <div className="flex w-full justify-start items-center">
-            <div className="flex py-8 w-full justify-start items-center">
-              <Button variant="text" sx={{ fontSize: "1rem" }}>
-                Followers:
-              </Button>
-              <p className="text-xl">{followerCount}</p>
-            </div>
-            <div className="flex py-8 w-full justify-start items-center">
-              <Button variant="text" sx={{ fontSize: "1rem" }}>
-                Follows:
-              </Button>
-              <p className="text-xl">{followerCount}</p>
-            </div>
+            <Followers />
+            <Follows />
           </div>
 
           {!userInfo?.emailVerified && (

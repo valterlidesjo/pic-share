@@ -52,10 +52,10 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
   if (images.length === 0) {
     return (
       <div className="w-full flex flex-col items-center justify-center mt-[60px]">
-        <h1 className="text-3xl font-bold">
+        <p className="text-3xl font-bold max-w-[80%] truncate sm:max-w-5xl py-4">
           {user?.username === "Unknown" ? user?.email : user?.username}&apos;s
           page
-        </h1>
+        </p>
         <div className="flex justify-center items-center gap-8 mb-8">
           <div className="flex justify-start items-center">
             <Button variant="text" sx={{ fontSize: "1rem" }}>
@@ -81,10 +81,10 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
   return (
     <>
       <div className="w-full flex flex-col items-center justify-center mt-[60px]">
-        <h1 className="text-3xl font-bold">
+        <p className="text-3xl font-bold max-w-[80%] break-words sm:max-w-5xl py-4">
           {user?.username === "Unknown" ? user?.email : user?.username}&apos;s
           page
-        </h1>
+        </p>
         <div className="flex justify-center items-center gap-8 mb-8">
           <div className="flex justify-start items-center">
             <Button variant="text" sx={{ fontSize: "1rem" }}>
@@ -104,10 +104,7 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
           {albums.map((album) => (
             <AlbumImageCard
               key={album.id}
-              title={album.title}
-              albumId={album.id}
-              imageId={album.images[0].imageId}
-              createdAt={album.createdAt}
+              album={album}
               showUser={true}
               showEdit={false}
             />
