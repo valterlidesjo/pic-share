@@ -4,6 +4,7 @@ import { CommentCount } from "./CommentCount";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LikeCount } from "./LikeCount";
+import { CircularProgress } from "@mui/material";
 
 export const Images = ({
   images,
@@ -17,10 +18,8 @@ export const Images = ({
   const router = useRouter();
   if (images.length < 1) {
     return (
-      <div className="w-full flex justify-center items-center">
-        <p className="text-2xl font-bold">
-          Could unfortunately not load any pictures.
-        </p>
+      <div className="w-full flex justify-center items-center pt-8 mt-[60px]">
+        <CircularProgress />
       </div>
     );
   }
