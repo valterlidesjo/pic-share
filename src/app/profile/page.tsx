@@ -28,7 +28,6 @@ const Profile = () => {
   const [status, setStatus] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const { images } = useGetPersonalImages(user?.uid);
-  const { followerCount } = useCheckFollowerCount(user?.uid);
   const { albums, loading: albumLoading } = useGetAlbums(user?.uid);
   const router = useRouter();
 

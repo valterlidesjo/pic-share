@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Slide,
 } from "@mui/material";
@@ -62,7 +61,6 @@ const Followers = () => {
             Click on a user to see their page
           </p>
           {followers?.map((follower) => (
-            // <div >
             <div
               className="flex flex-col justify-center items-start cursor-pointer pr-2 mb-2"
               onClick={() => router.push(`/users/${follower.followedId}`)}
@@ -75,7 +73,6 @@ const Followers = () => {
               )}
               <p className="text-xs">{follower.followerUserEmail}</p>
             </div>
-            // </div>
           ))}
         </DialogContent>
         <DialogActions>

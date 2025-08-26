@@ -60,6 +60,37 @@ export const deleteImageFromStorage = onDocumentDeleted(
   }
 );
 
+export const deleteCommentAnswers = onDocumentDeleted(
+  "comments/{commentId}",
+  async (event: functions.CloudEvent<QueryDocumentSnapshot | undefined>) => {
+    if (!event.data) {
+      console.log("No data found in event.data for deleted document.");
+      return null;
+    }
+    const deletedCommentRef = event.data.ref;
+    const subCollectionRef = deletedCommentRef.collection("commentComments");
+
+    const snapshot = await subCollectionRef.get();
+    if (snapshot.empty) {
+      functions.logger.log(
+        "Subcollection commentComments is already empty, no documents to delete."
+      );
+      return null;
+    }
+
+    const batch = admin.firestore().batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    functions.logger
+      .log(`Successfully deleted all documents from subcollection at path:
+      ${subCollectionRef.path}`);
+    return null;
+  }
+);
+
 export const addEmailToImageOnUserCreate = onDocumentCreated(
   "users/{userId}",
   async (event) => {
