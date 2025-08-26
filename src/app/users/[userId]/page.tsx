@@ -104,10 +104,7 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
           {albums.map((album) => (
             <AlbumImageCard
               key={album.id}
-              title={album.title}
-              albumId={album.id}
-              imageId={album.images[0].imageId}
-              createdAt={album.createdAt}
+              album={album}
               showUser={true}
               showEdit={false}
             />

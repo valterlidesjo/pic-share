@@ -21,6 +21,7 @@ const AlbumImageCard = ({
   const { user } = useAuthGuard();
   const { albums, loading: albumLoading } = useGetAlbums(undefined, album.id);
   const imageIdList = useMemo(() => extractAlbumIdIntoArray(albums), [albums]);
+  const { image, loading } = useGetImage(album.images[0].imageId);
 
   if (!album.images || album.images.length === 0) {
     return (
@@ -37,8 +38,6 @@ const AlbumImageCard = ({
       </div>
     );
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { image, loading } = useGetImage(album.images[0].imageId);
 
   if (!image || loading || albumLoading) {
     return (
