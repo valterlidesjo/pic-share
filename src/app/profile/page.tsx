@@ -12,7 +12,6 @@ import ProfileImageCard from "@/app/profile/components/ProfileImageCard";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { checkAndUpdateEmailVerified } from "@/utils/verifyEmailAndUpdate";
 import { useGetPersonalImages } from "@/hooks/images/useGetOwnImages";
-import useCheckFollowerCount from "@/hooks/followers/useCheckFollowerCount";
 import EditAccountDialog from "./components/EditAccountDialog";
 import CreateAlbumDialog from "./components/CreateAlbumDialog";
 import { useGetAlbums } from "@/hooks/albums/useGetAlbums";
