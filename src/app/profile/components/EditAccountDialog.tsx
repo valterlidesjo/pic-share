@@ -13,6 +13,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { User as UserProps } from "firebase/auth";
+import useCheckIfUsernameExists from "@/hooks/users/useCheckIfUsernameExists";
 
 const Transition = React.forwardRef<
   unknown,
@@ -29,9 +30,15 @@ const EditAccountDialog = ({
   const [open, setOpen] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
+  const { usernameExists } = useCheckIfUsernameExists(newUsername);
 
   const handleEditUsername = async () => {
     if (!user?.uid) return;
+
+    if (usernameExists) {
+      setUsernameMessage("Username already exists, please choose a different.");
+      return;
+    }
 
     try {
       await updateDoc(doc(db, "users", user.uid), { username: newUsername });

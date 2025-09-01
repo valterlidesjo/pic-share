@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,6 +16,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { User } from "firebase/auth";
 import { UserInfo } from "@/hooks/users/useGetUserInfo";
+import useCheckIfUsernameExists from "@/hooks/users/useCheckIfUsernameExists";
 
 const Transition = React.forwardRef<
   unknown,
@@ -33,12 +35,16 @@ const UsernameDialog = ({
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
+  const { usernameExists } = useCheckIfUsernameExists(username);
 
   const handleAddUsername = async () => {
     if (!user?.uid) return;
+    if (usernameExists) {
+      setUsernameMessage("Username already exists, please choose a different.");
+      return;
+    }
     try {
       await updateDoc(doc(db, "users", user.uid), { username });
-      setUsernameMessage(`Username added successfully: ${username}`);
     } catch (error) {
       console.error("Error adding username: ", error);
 
