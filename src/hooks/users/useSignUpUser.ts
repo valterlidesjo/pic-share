@@ -8,6 +8,11 @@ import { useGhostGuard } from "../auth/useGhostGuard";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
+export interface FirebaseAuthError {
+  code: string;
+  message: string;
+}
+
 const saveUserToFirestore = async (
   email: string,
   userId: string
@@ -36,6 +41,15 @@ export const useSignUpUser = () => {
       setMessage("No ghost user to link account with");
       return;
     }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setMessage(
+        "Password is to weak, it has to be at least 8 characters long, contain one capital letter and one number."
+      );
+      return;
+    }
+
     if (!user.isAnonymous) {
       setMessage("You are already signed in with a permanent account.");
       return;
@@ -59,8 +73,34 @@ export const useSignUpUser = () => {
         setMessage("Account linked successfully! Could not save user data.");
       }
     } catch (error) {
-      console.error("Error linking account:", error);
-      setMessage("Failed to link account. Please try again.");
+      if ((error as FirebaseAuthError).code) {
+        const firebaseError = error as FirebaseAuthError;
+        console.error(
+          "Firebase Error:",
+          firebaseError.code,
+          firebaseError.message
+        );
+        switch (firebaseError.code) {
+          case "auth/email-already-in-use":
+            setMessage(
+              "This email is alreay in use. Please use another one or log in to your account. "
+            );
+            break;
+          case "auth/invalid-email":
+            setMessage("Invalid e-mail. Controll it and please try again.");
+            break;
+          case "auth/weak-password":
+            setMessage(
+              "Password is to weak, it has to be at least 8 characters long, contain one capital letter and one number."
+            );
+            break;
+          default:
+            setMessage(
+              "Unexpected error. Failed to create account. Please try again."
+            );
+            break;
+        }
+      }
     }
   };
 

@@ -1,15 +1,17 @@
 "use client";
-import React from "react";
+import { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebaseConfig";
 import { useRouter } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { checkUserDoc } from "@/utils/checkUserDoc";
 import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
+import { FirebaseAuthError } from "@/hooks/users/useSignUpUser";
 
 const SignIn = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
   useGhostGuard();
@@ -19,7 +21,7 @@ const SignIn = () => {
       e.preventDefault();
       const result = await signInWithEmailAndPassword(email, password);
       if (result?.user.uid === undefined) {
-        console.log("Tried to check user doc but user not found");
+        setMessage("Login failed, could not find user.");
       } else {
         await checkUserDoc(email, result?.user.uid);
       }
@@ -27,7 +29,35 @@ const SignIn = () => {
       setPassword("");
       router.push("/gallery");
     } catch (error) {
-      console.error("Error signing in:", error);
+      if ((error as FirebaseAuthError).code) {
+        const firebaseError = error as FirebaseAuthError;
+        console.error(
+          "Firebase Error:",
+          firebaseError.code,
+          firebaseError.message
+        );
+
+        switch (firebaseError.code) {
+          case "auth/invalid-email":
+            setMessage("Invalid email. Please check the format.");
+            break;
+          case "auth/user-not-found":
+            setMessage("No user found, please check your email and password.");
+            break;
+          case "auth/wrong-password":
+            setMessage("No user found, please check your email and password.");
+            break;
+          case "auth/invalid-credential":
+            setMessage("No user found, please check your email and password.");
+            break;
+          case "auth/user-disabled":
+            setMessage("This account has been disabled.");
+            break;
+          default:
+            setMessage("Unexpected error, please try again.");
+            break;
+        }
+      }
     }
   };
   return (
@@ -37,6 +67,9 @@ const SignIn = () => {
           <h2 className="text-2xl font-bold mb-6 text-center text-[#1976D2]">
             Sign In
           </h2>
+          {message && (
+            <p className="text-blue-500 mb-4 text-center">{message}</p>
+          )}
           <form
             onSubmit={(e) => handleSignIn(e)}
             className="flex flex-col justify-center items-center"
