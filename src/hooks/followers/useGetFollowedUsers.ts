@@ -24,10 +24,12 @@ const useGetFollowedUsers = (userId: string | undefined) => {
   const [followedUsers, setFollowedUsers] = useState<FollowedUsers[] | null>(
     null
   );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userId || !db) {
       setFollowedUsers(null);
+      setLoading(false);
       return;
     }
     const q = query(
@@ -69,16 +71,18 @@ const useGetFollowedUsers = (userId: string | undefined) => {
         });
         const results = await Promise.all(fetchPromises);
         setFollowedUsers(results);
+        setLoading(false);
       },
       (error) => {
         console.error("Error fetching followed users:", error);
         setFollowedUsers([]);
+        setLoading(false);
       }
     );
 
     return () => unsubscribe();
   }, [userId]);
-  return { followedUsers };
+  return { followedUsers, loading };
 };
 
 export default useGetFollowedUsers;

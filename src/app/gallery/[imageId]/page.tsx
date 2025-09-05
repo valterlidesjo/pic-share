@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import { formatFileNameForDisplay } from "@/utils/formatFileName";
 import { addCommentToImage } from "@/utils/addCommentToImage";
 import useGetComments from "@/hooks/comments/useGetComments";
@@ -35,6 +37,7 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
   const { likeCount } = useCheckLikeCount(imageId);
   const { image, loading, error } = useGetImage(imageId);
   const [imageComment, setImageComment] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const router = useRouter();
 
   const userEmail: string = user?.email || "";
@@ -81,6 +84,9 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           <p className="text-2xl font-bold mb-4 break-words max-w-[80%]">
             {formatFileNameForDisplay(image.fileName)}
           </p>
+          <div className="w-full h-auto flex justify-end items-center max-w-5xl cursor-pointer">
+            <FullscreenIcon onClick={() => setIsFullscreen(true)} />
+          </div>
           <div className="relative w-full aspect-video h-auto mb-4 sm:max-h-[70vh]">
             <Image
               src={image.imageUrl}
@@ -89,6 +95,7 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
               className="object-contain rounded-lg"
             />
           </div>
+
           <div className="flex gap-4 justify-center items-center">
             <Button
               variant="outlined"
@@ -104,7 +111,6 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
               )}
             </div>
           </div>
-          {/* )} */}
           <p className="text-md text-gray-500 pt-2">Likes: {likeCount}</p>
 
           <p className="text-md pt-2">
@@ -147,6 +153,21 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
           </Button>
         </div>
       </div>
+      {isFullscreen && (
+        <div className="fixed inset-0 bg-white flex justify-center items-center z-50">
+          <div className="relative w-full h-full">
+            <Image
+              src={image.imageUrl}
+              alt={image.fileName || ""}
+              fill
+              className="object-contain"
+            />
+            <div className="absolute top-24 right-8 cursor-pointer">
+              <FullscreenExitIcon onClick={() => setIsFullscreen(false)} />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

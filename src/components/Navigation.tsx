@@ -9,6 +9,7 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ChatIcon from "@mui/icons-material/Chat";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/hooks/auth/useAuthGuard";
@@ -76,9 +77,12 @@ const Navigation: React.FC = () => {
                   onClick={() => setDrawerOpen(true)}
                   sx={{ mr: 2, color: "#1976D2" }}
                 >
-                  <MenuIcon />
+                  <MenuIcon sx={{ fontSize: "2rem" }} />
                 </IconButton>
-                <div className="relative h-[60px] w-[60px]">
+                <div
+                  className="relative h-[60px] w-[60px]"
+                  onClick={() => router.push("/")}
+                >
                   <Image
                     src="/picshare.png"
                     alt="PicShare logo 1"
@@ -86,6 +90,9 @@ const Navigation: React.FC = () => {
                     className="object-contain"
                     priority
                   />
+                </div>
+                <div onClick={() => router.push("/messages")}>
+                  <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
                 </div>
               </Box>
             </>
@@ -100,7 +107,10 @@ const Navigation: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <div className="relative h-[60px] w-[60px]">
+              <div
+                className="relative h-[60px] w-[60px]"
+                onClick={() => router.push("/")}
+              >
                 <Image
                   src="/picshare.png"
                   alt="PicShare logo 1"
@@ -119,6 +129,9 @@ const Navigation: React.FC = () => {
                   {option.label}
                 </Button>
               ))}
+              <div onClick={() => router.push("/messages")}>
+                <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
+              </div>
             </Box>
           )}
         </Toolbar>

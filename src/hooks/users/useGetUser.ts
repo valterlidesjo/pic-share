@@ -7,7 +7,7 @@ type FirestoreUser = Omit<User, "createdAt"> & {
   createdAt: Timestamp;
 };
 
-const useGetUser = (userId: string) => {
+const useGetUser = (userId: string | null | undefined) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
