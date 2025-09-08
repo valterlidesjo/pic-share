@@ -3,7 +3,7 @@ import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { User } from "../users/useGetVerifiedUsers";
 
-type FirestoreUser = Omit<User, "createdAt"> & {
+export type FirestoreUser = Omit<User, "createdAt"> & {
   createdAt: Timestamp;
 };
 
@@ -29,11 +29,11 @@ const useGetUser = (userId: string | null | undefined) => {
             userId: data.userId,
             createdAt: createdAtDate,
             emailVerified: data.emailVerified,
-            email: data.email || "Unknown",
-            username: data.username || "Unknown",
+            email: data.email,
+            username: data.username,
           });
         } else {
-          console.error("Could not fetch user");
+          console.error("Could not fetch user", userId);
         }
       } catch (error) {
         console.error("Error fetching user:", error);

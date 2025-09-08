@@ -3,12 +3,15 @@ import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export type Conversation = {
+  id: string;
   createdAt: Date;
+  updatedAt: Date;
   userIds: string[];
 };
 
-type FirestoreConversation = Omit<Conversation, "createdAt"> & {
+export type FirestoreConversation = Omit<Conversation, "createdAt"> & {
   createdAt: Timestamp;
+  updatedAt: Timestamp;
 };
 
 export const useGetConversation = (conversationId: string) => {
@@ -30,8 +33,13 @@ export const useGetConversation = (conversationId: string) => {
           const createdAtDate = data.createdAt?.toDate
             ? data.createdAt.toDate()
             : new Date();
+          const updatedAtDate = data.updatedAt?.toDate
+            ? data.updatedAt.toDate()
+            : new Date();
           setConversation({
+            id: docSnap.id,
             createdAt: createdAtDate,
+            updatedAt: updatedAtDate,
             userIds: data.userIds,
           });
         } else {

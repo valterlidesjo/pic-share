@@ -1,5 +1,7 @@
-import { FollowedUsers } from "@/hooks/followers/useGetFollowedUsers";
+import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useCheckIfConversationExists } from "@/hooks/messages/useCheckIfConversationExists";
+import { Conversation } from "@/hooks/messages/useGetConversation";
+import useGetUser from "@/hooks/users/useGetUser";
 import { createConversation } from "@/utils/createConversation";
 import { formatDateRelative } from "@/utils/formatDateRelative";
 import { getExistingConversationId } from "@/utils/getExistingConversationId";
@@ -7,16 +9,35 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
-  const { latestMessage, latestMessageDate, loading } =
-    useCheckIfConversationExists(
-      followedUser.followerId,
-      followedUser.followedId
-    );
+const StartedMessageItem = ({
+  conversation,
+}: {
+  conversation: Conversation;
+}) => {
+  const { latestMessage, latestMessageDate } = useCheckIfConversationExists(
+    conversation.userIds[0],
+    conversation.userIds[1]
+  );
+  const { user, loading } = useAuthGuard();
   const router = useRouter();
   const messageDate = formatDateRelative(latestMessageDate);
+  const secondUserId = conversation.userIds.find((id) => id !== user?.uid);
+  const { user: otherUser } = useGetUser(secondUserId);
 
-  const handleMessageClick = async (userId: string, secondUserId: string) => {
+  const handleMessageClick = async (
+    userId: string | null | undefined,
+    secondUserId: string | undefined
+  ) => {
+    if (!userId || !secondUserId) {
+      console.error(
+        "Could not start conversation, no userId or secondUserId provided"
+      );
+      return;
+    }
+    if (userId === secondUserId) {
+      console.error("User IDs are identical, aborting");
+      return;
+    }
     let conversationId: string | null | undefined =
       await getExistingConversationId(userId, secondUserId);
     if (!conversationId) {
@@ -27,17 +48,16 @@ const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
 
   if (loading)
     return (
-      <div className="w-full flex justify-center items-center pt-4 mt-[60px] cursor-pointer">
+      <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
         <CircularProgress />
       </div>
     );
+
   return (
     <div
-      key={followedUser.id}
-      className="flex justify-start items-center border-b-[1px] border-gray-500 w-full mb-1"
-      onClick={() =>
-        handleMessageClick(followedUser.followerId, followedUser.followedId)
-      }
+      key={conversation.id}
+      className="flex justify-start items-center border-b-[1px] border-gray-500 w-full mb-1 cursor-pointer"
+      onClick={() => handleMessageClick(user?.uid, secondUserId)}
     >
       <AccountCircleIcon
         sx={{
@@ -49,9 +69,7 @@ const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
       <div className="flex flex-col items-start justify-center w-full mb-1 gap-1 max-w-[85%]">
         <div className="flex justify-between items-center w-full">
           <p className="text-xs">
-            {followedUser.followedUserUsername
-              ? followedUser.followedUserUsername
-              : followedUser.followedUserEmail}
+            {otherUser?.username ? otherUser.username : otherUser?.email}
           </p>
           <p className="text-[8px] text-gray-500">{messageDate}</p>
         </div>
@@ -63,4 +81,4 @@ const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
   );
 };
 
-export default MessageItem;
+export default StartedMessageItem;

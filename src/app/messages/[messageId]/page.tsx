@@ -2,7 +2,13 @@
 import React, { use, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useGetConversation } from "@/hooks/messages/useGetConversation";
@@ -10,6 +16,7 @@ import { CircularProgress } from "@mui/material";
 import { useGetMessages } from "@/hooks/messages/useGetMessages";
 import { PrivateMessageItem } from "../components/PrivateMessageItem";
 import useGetUser from "@/hooks/users/useGetUser";
+import { useRouter } from "next/navigation";
 
 interface PrivateMessagePageProps {
   params: Promise<{
@@ -26,6 +33,7 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
   const toUserId = conversation?.userIds.find((id) => id !== user?.uid);
   const { messages, loading: messagesLoading } = useGetMessages(messageId);
   const { user: otherUser } = useGetUser(toUserId);
+  const router = useRouter();
 
   const handleMessageSend = async () => {
     if (!currentMessage || !user?.uid || !toUserId) {
@@ -49,6 +57,11 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
         to: toUserId,
         createdAt: serverTimestamp(),
       });
+      const conversationDocRef = doc(db, "conversations", messageId);
+      await updateDoc(conversationDocRef, {
+        updatedAt: serverTimestamp(),
+      });
+
       setCurrentMessage("");
     } catch (error) {
       console.error("Error with message", error);
@@ -64,9 +77,17 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
 
   return (
     <div className="w-full h-[90vh] flex flex-col justify-between items-center px-8 mt-[60px]">
-      <p className="text-[#1976D2] font-bold text-2xl mt-4">
-        {otherUser?.username ? otherUser.username : otherUser?.email}
-      </p>
+      <Button
+        onClick={() => {
+          router.push(`/users/${otherUser?.userId}`);
+        }}
+        sx={{ marginTop: "4rem" }}
+      >
+        <p className="text-[#1976D2] font-bold text-2xl">
+          {otherUser?.username ? otherUser.username : otherUser?.email}
+        </p>
+      </Button>
+
       {messagesLoading ? (
         <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
           <CircularProgress />

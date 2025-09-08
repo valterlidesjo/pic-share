@@ -16,11 +16,13 @@ export const useCheckIfConversationExists = (
 ) => {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [latestMessage, setLatestMessage] = useState<string | null>(null);
+  const [latestMessageDate, setLatestMessageDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userIdA || !userIdB || !db) {
       setLatestMessage(null);
+      setLatestMessageDate(null);
       setConversationId(null);
       setLoading(false);
       return;
@@ -35,6 +37,7 @@ export const useCheckIfConversationExists = (
       if (snapshot.empty) {
         setConversationId(null);
         setLatestMessage(null);
+        setLatestMessageDate(null);
         setLoading(false);
       } else {
         const conversationDoc = snapshot.docs[0];
@@ -56,8 +59,14 @@ export const useCheckIfConversationExists = (
             if (!msgSnapshot.empty) {
               const data = msgSnapshot.docs[0].data() as FirestoreMessages;
               setLatestMessage(data.message);
+              const createdAtDate = data.createdAt
+                ? (data.createdAt as any).toDate()
+                : new Date();
+
+              setLatestMessageDate(createdAtDate);
             } else {
               setLatestMessage(null);
+              setLatestMessageDate(null);
             }
             setLoading(false);
           }
@@ -68,7 +77,7 @@ export const useCheckIfConversationExists = (
     return () => unsubscribe();
   }, [userIdA, userIdB]);
   if (!userIdA || !userIdB) {
-    return { conversationId, latestMessage, loading };
+    return { conversationId, latestMessage, latestMessageDate, loading };
   }
-  return { conversationId, latestMessage, loading };
+  return { conversationId, latestMessage, latestMessageDate, loading };
 };

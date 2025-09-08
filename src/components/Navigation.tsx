@@ -91,9 +91,9 @@ const Navigation: React.FC = () => {
                     priority
                   />
                 </div>
-                <div onClick={() => router.push("/messages")}>
+                <Button onClick={() => router.push("/messages")}>
                   <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
-                </div>
+                </Button>
               </Box>
             </>
           )}
@@ -108,7 +108,7 @@ const Navigation: React.FC = () => {
               }}
             >
               <div
-                className="relative h-[60px] w-[60px]"
+                className="relative h-[60px] w-[60px] cursor-pointer"
                 onClick={() => router.push("/")}
               >
                 <Image
@@ -129,9 +129,9 @@ const Navigation: React.FC = () => {
                   {option.label}
                 </Button>
               ))}
-              <div onClick={() => router.push("/messages")}>
+              <Button onClick={() => router.push("/messages")}>
                 <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
-              </div>
+              </Button>
             </Box>
           )}
         </Toolbar>

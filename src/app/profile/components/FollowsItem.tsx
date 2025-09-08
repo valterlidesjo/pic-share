@@ -7,15 +7,18 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const FollowsItem = ({ follow }: { follow: FollowedUsers }) => {
-  const { isFollowing } = useCheckIfUserFollow(follow.id, follow.followedId);
+  const { isFollowing } = useCheckIfUserFollow(
+    follow.followerId,
+    follow.followedId
+  );
   const router = useRouter();
 
   const handleFollowClick = async (followedUserId: string) => {
     if (isFollowing) {
-      await unfollowUser(follow.id, followedUserId);
+      await unfollowUser(follow.followerId, followedUserId);
       return;
     }
-    await followUser(follow.id, followedUserId);
+    await followUser(follow.followerId, followedUserId);
   };
   return (
     <div key={follow.id} className="flex justify-between items-center mb-2">

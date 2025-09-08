@@ -19,6 +19,7 @@ export const createConversation = async (
     const result = await addDoc(conversationCollectionRef, {
       userIds: sortedUserIds,
       createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
     return result.id;
   } catch (error) {
