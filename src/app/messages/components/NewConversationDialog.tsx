@@ -109,9 +109,9 @@ const NewConversationDialog = ({ userId }: { userId: string | undefined }) => {
         <DialogTitle>{"New conversation"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            This is where new conversations from users you don't already follow
-            will appear. In order to start the conversation you have to start to
-            follow the user aswell.
+            This is where new conversations from users you don&apos;t already
+            follow will appear. In order to start the conversation you have to
+            start to follow the user aswell.
             <br />
             If you want to find more friends to start conversations with you can
             find them at{" "}

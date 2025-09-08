@@ -59,6 +59,7 @@ export const useCheckIfConversationExists = (
             if (!msgSnapshot.empty) {
               const data = msgSnapshot.docs[0].data() as FirestoreMessages;
               setLatestMessage(data.message);
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const createdAtDate = data.createdAt
                 ? (data.createdAt as any).toDate()
                 : new Date();
