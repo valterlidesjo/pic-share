@@ -2,14 +2,13 @@ import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useCheckIfConversationExists } from "@/hooks/messages/useCheckIfConversationExists";
 import { Conversation } from "@/hooks/messages/useGetConversation";
 import useGetUser from "@/hooks/users/useGetUser";
+import { addLatestRead } from "@/utils/addLatestRead";
 import { createConversation } from "@/utils/createConversation";
 import { formatDateRelative } from "@/utils/formatDateRelative";
 import { getExistingConversationId } from "@/utils/getExistingConversationId";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { CircularProgress } from "@mui/material";
-import { doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const StartedMessageItem = ({
   conversation,
@@ -45,6 +44,7 @@ const StartedMessageItem = ({
     if (!conversationId) {
       conversationId = await createConversation(userId, secondUserId);
     }
+    await addLatestRead(conversationId);
     router.push(`/messages/${conversationId}`);
   };
 
