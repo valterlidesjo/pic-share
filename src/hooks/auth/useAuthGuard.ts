@@ -16,8 +16,7 @@ const useAuthGuard = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
-      const isAnonymous = currentUser?.isAnonymous;
-      if (!currentUser && isAnonymous) {
+      if (!currentUser) {
         router.push("/sign-in");
       }
     });

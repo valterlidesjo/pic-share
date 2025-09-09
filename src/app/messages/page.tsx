@@ -18,12 +18,13 @@ const Messages = () => {
     Conversation[]
   >([]);
   const [followedUsersToDisplay, setFollowedUsersToDisplay] = useState<
-    FollowedUsers[]
+    FollowedUsers[] | null
   >([]);
   const { user, loading } = useAuthGuard();
   const { followedUsers, loading: followedUserLoading } = useGetFollowedUsers(
     user?.uid
   );
+  console.log(followedUsers);
   const { conversations, loading: conversationsLoading } =
     useGetAllConversations(user?.uid);
 
@@ -46,15 +47,12 @@ const Messages = () => {
         conversationsWithMessages,
       });
       setFollowedUsersToDisplay(sortedFollowedUsers);
+    } else {
+      setFollowedUsersToDisplay(followedUsers);
     }
   }, [conversationsWithMessages, followedUsers]);
 
-  if (
-    loading ||
-    followedUserLoading ||
-    conversationsLoading ||
-    conversationsWithMessages.length === 0
-  )
+  if (loading || followedUserLoading || conversationsLoading)
     return (
       <div className="w-full flex flex-col justify-center items-center">
         <div className="w-full flex justify-between items-center px-8 pt-4 mt-[60px] sm:max-w-[512px]">
@@ -62,6 +60,26 @@ const Messages = () => {
           <NewConversationDialog userId={user?.uid} />
         </div>
         <CircularProgress />
+      </div>
+    );
+  if (conversationsWithMessages.length === 0)
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex justify-between items-center px-8 pt-4 mt-[60px] sm:max-w-[512px]">
+          <h1 className="text-[#1976D2] font-bold text-2xl">Messages</h1>
+          <NewConversationDialog userId={user?.uid} />
+        </div>
+        <p className="w-full px-8">You have no conversations yet</p>
+        <div className="w-full justify-start items-center px-8 py-4 sm:max-w-[512px]">
+          <p className="text-[#1976D2] font-bold text-s">
+            Start a new conversation with someone you follow
+          </p>
+        </div>
+        <div className="w-full px-8 flex flex-col items-start justify-center sm:max-w-[512px]">
+          {followedUsersToDisplay?.map((user) => (
+            <MessageItem followedUser={user} key={user.id} />
+          ))}
+        </div>
       </div>
     );
 

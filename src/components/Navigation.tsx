@@ -1,6 +1,6 @@
 // src/components/Navigation.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +17,9 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
 import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
+import { useGetAllConversations } from "@/hooks/messages/useGetAllConversations";
+import { extractConversationIdIntoArray } from "@/utils/extractConversationIdIntoArray";
+import { useCheckIfAnyUnreadConversation } from "@/hooks/messages/useCheckIfAnyUnreadConversation";
 
 const Navigation: React.FC = () => {
   const ghostGuard = useGhostGuard();
@@ -24,8 +27,15 @@ const Navigation: React.FC = () => {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width:640px)");
+  const { conversations } = useGetAllConversations(user?.uid);
+  const conversationIds = useMemo(
+    () => extractConversationIdIntoArray(conversations),
+    [conversations]
+  );
+  const { conversationsUnread, loading: unreadConversationsLoading } =
+    useCheckIfAnyUnreadConversation(conversationIds);
 
-  if (loading || ghostGuard.loading) {
+  if (loading || ghostGuard.loading || unreadConversationsLoading) {
     return (
       <div className="h-[60px] flex justify-center items-center text-[#1976D2] font-bold text-lg">
         Loading...
@@ -93,6 +103,11 @@ const Navigation: React.FC = () => {
                 </div>
                 <Button onClick={() => router.push("/messages")}>
                   <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
+                  {conversationsUnread && conversationsUnread.length > 0 && (
+                    <span className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full animate-bounce">
+                      {conversationsUnread.length}
+                    </span>
+                  )}
                 </Button>
               </Box>
             </>
@@ -131,6 +146,11 @@ const Navigation: React.FC = () => {
               ))}
               <Button onClick={() => router.push("/messages")}>
                 <ChatIcon sx={{ fontSize: "2rem", color: "#1976D2" }} />
+                {conversationsUnread && conversationsUnread.length > 0 && (
+                  <span className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full animate-bounce">
+                    {conversationsUnread.length}
+                  </span>
+                )}
               </Button>
             </Box>
           )}

@@ -10,7 +10,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
   useGhostGuard();
-  const { user } = useAuthGuard();
+  const { user, loading } = useAuthGuard();
   const isMobile = useIsMobile(640);
 
   useEffect(() => {
@@ -20,6 +20,50 @@ export default function Home() {
       setIsLoggedIn(false);
     }
   }, [user]);
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex flex-col justify-center items-center w-full">
+          {isMobile ? (
+            <>
+              <div className="relative h-dvh w-full">
+                <Image
+                  src="/picshare-collage.png"
+                  alt="PicShare collage"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-black/30" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="relative h-dvh w-full">
+                <Image
+                  src="/picshare-collage-desk.png"
+                  alt="PicShare collage"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-black/30" />
+              </div>
+            </>
+          )}
+
+          <div className="flex flex-col justify-center items-center sm:flex-row sm:items-start">
+            <div className="absolute py-6 w-full top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[50%]">
+              <p className="px-4 pt-8 w-full text-center font-bold text-white text-6xl sm:text-left sm:w-[40%] sm:pt-0 sm:pl-32">
+                Welcome to PicShare
+              </p>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -53,18 +97,6 @@ export default function Home() {
         )}
 
         <div className="flex flex-col justify-center items-center sm:flex-row sm:items-start">
-          {/* {!isMobile && (
-            <div className="absolute h-[520px] w-full top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Image
-                src="/picsharelogo.png"
-                alt="PicShare logo 1"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          )} */}
-
           <div className="absolute py-6 w-full top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[50%]">
             <p className="px-4 pt-8 w-full text-center font-bold text-white text-6xl sm:text-left sm:w-[40%] sm:pt-0 sm:pl-32">
               Welcome to PicShare
