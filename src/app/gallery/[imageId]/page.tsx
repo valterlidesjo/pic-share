@@ -120,37 +120,39 @@ const ImagePage: React.FC<ImagePageProps> = ({ params }) => {
             Uploaded at: {image.uploadedAt.toLocaleDateString()}
           </p>
         </div>
-        <ImageComments comments={comments} imageId={imageId} />
+        <div className="w-full flex flex-col items-center justify-center sm:max-w-[512px]">
+          <ImageComments comments={comments} imageId={imageId} />
 
-        <div className="flex flex-col gap-2 w-full pb-8">
-          <TextField
-            label={`Leave a comment on ${formatFileNameForDisplay(
-              image.fileName
-            )}`}
-            value={imageComment}
-            onChange={(e) => setImageComment(e.target.value)}
-            sx={{
-              width: "100%",
-            }}
-          />
-          <Button
-            variant="outlined"
-            onClick={() => {
-              addCommentToImage(
-                imageId,
-                image.userId,
-                user?.uid,
-                userEmail,
-                imageComment
-              );
-              setImageComment("");
-            }}
-            sx={{
-              width: "100%",
-            }}
-          >
-            Comment
-          </Button>
+          <div className="flex flex-col gap-2 w-full pb-8">
+            <TextField
+              label={`Leave a comment on ${formatFileNameForDisplay(
+                image.fileName
+              )}`}
+              value={imageComment}
+              onChange={(e) => setImageComment(e.target.value)}
+              sx={{
+                width: "100%",
+              }}
+            />
+            <Button
+              variant="outlined"
+              onClick={() => {
+                addCommentToImage(
+                  imageId,
+                  image.userId,
+                  user?.uid,
+                  userEmail,
+                  imageComment
+                );
+                setImageComment("");
+              }}
+              sx={{
+                width: "100%",
+              }}
+            >
+              Comment
+            </Button>
+          </div>
         </div>
       </div>
       {isFullscreen && (

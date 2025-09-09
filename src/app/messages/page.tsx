@@ -67,7 +67,7 @@ const Messages = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full pb-4">
         <div className="w-full flex justify-between items-center px-8 pt-4 mt-[60px] sm:max-w-[512px]">
           <h1 className="text-[#1976D2] font-bold text-2xl">Messages</h1>
           <NewConversationDialog userId={user?.uid} />

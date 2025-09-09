@@ -2,13 +2,7 @@
 import React, { use, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useGetConversation } from "@/hooks/messages/useGetConversation";
@@ -35,6 +29,16 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
   const { user: otherUser } = useGetUser(toUserId);
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const addLatestRead = async () => {
+  //     const conversationDocRef = doc(db, "conversations", messageId);
+  //     await updateDoc(conversationDocRef, {
+  //       latestConversationRead: serverTimestamp(),
+  //     });
+  //   };
+  //   addLatestRead();
+  // }, []);
+
   const handleMessageSend = async () => {
     if (!currentMessage || !user?.uid || !toUserId) {
       console.error(
@@ -57,10 +61,10 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
         to: toUserId,
         createdAt: serverTimestamp(),
       });
-      const conversationDocRef = doc(db, "conversations", messageId);
-      await updateDoc(conversationDocRef, {
-        updatedAt: serverTimestamp(),
-      });
+      // const conversationDocRef = doc(db, "conversations", messageId);
+      // await updateDoc(conversationDocRef, {
+      //   updatedAt: serverTimestamp(),
+      // });
 
       setCurrentMessage("");
     } catch (error) {
