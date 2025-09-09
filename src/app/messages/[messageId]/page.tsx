@@ -29,16 +29,6 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
   const { user: otherUser } = useGetUser(toUserId);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const addLatestRead = async () => {
-  //     const conversationDocRef = doc(db, "conversations", messageId);
-  //     await updateDoc(conversationDocRef, {
-  //       latestConversationRead: serverTimestamp(),
-  //     });
-  //   };
-  //   addLatestRead();
-  // }, []);
-
   const handleMessageSend = async () => {
     if (!currentMessage || !user?.uid || !toUserId) {
       console.error(
@@ -61,10 +51,6 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
         to: toUserId,
         createdAt: serverTimestamp(),
       });
-      // const conversationDocRef = doc(db, "conversations", messageId);
-      // await updateDoc(conversationDocRef, {
-      //   updatedAt: serverTimestamp(),
-      // });
 
       setCurrentMessage("");
     } catch (error) {
@@ -85,9 +71,9 @@ const PrivateMessage: React.FC<PrivateMessagePageProps> = ({ params }) => {
         onClick={() => {
           router.push(`/users/${otherUser?.userId}`);
         }}
-        sx={{ marginTop: "4rem" }}
+        sx={{ marginTop: "4rem", width: "100%" }}
       >
-        <p className="text-[#1976D2] font-bold text-2xl">
+        <p className="text-[#1976D2] font-bold text-2xl break-words max-w-[calc(100%-2rem)]">
           {otherUser?.username ? otherUser.username : otherUser?.email}
         </p>
       </Button>

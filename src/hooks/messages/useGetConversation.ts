@@ -6,12 +6,14 @@ export type Conversation = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  latestConversationRead: Date;
   userIds: string[];
 };
 
 export type FirestoreConversation = Omit<Conversation, "createdAt"> & {
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  latestConversationRead: Timestamp;
 };
 
 export const useGetConversation = (conversationId: string) => {
@@ -36,10 +38,14 @@ export const useGetConversation = (conversationId: string) => {
           const updatedAtDate = data.updatedAt?.toDate
             ? data.updatedAt.toDate()
             : new Date();
+          const latestConversationReadDate = data.latestConversationRead?.toDate
+            ? data.latestConversationRead.toDate()
+            : new Date();
           setConversation({
             id: docSnap.id,
             createdAt: createdAtDate,
             updatedAt: updatedAtDate,
+            latestConversationRead: latestConversationReadDate,
             userIds: data.userIds,
           });
         } else {

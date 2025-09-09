@@ -25,10 +25,14 @@ export const useGetAllConversations = (userId: string | undefined) => {
         const updatedAtDate = data.updatedAt?.toDate
           ? data.updatedAt.toDate()
           : new Date();
+        const latestConversationReadDate = data.latestConversationRead?.toDate
+          ? data.latestConversationRead.toDate()
+          : new Date();
         return {
           id: doc.id,
           createdAt: createdAtDate,
           updatedAt: updatedAtDate,
+          latestConversationRead: latestConversationReadDate,
           userIds: data.userIds,
         };
       });

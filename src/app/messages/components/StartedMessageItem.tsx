@@ -1,5 +1,6 @@
 import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useCheckIfConversationExists } from "@/hooks/messages/useCheckIfConversationExists";
+import { useCheckIfLastMessageIsRead } from "@/hooks/messages/useCheckIfLastMessageIsRead";
 import { Conversation } from "@/hooks/messages/useGetConversation";
 import useGetUser from "@/hooks/users/useGetUser";
 import { addLatestRead } from "@/utils/addLatestRead";
@@ -9,6 +10,7 @@ import { getExistingConversationId } from "@/utils/getExistingConversationId";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const StartedMessageItem = ({
   conversation,
@@ -24,6 +26,7 @@ const StartedMessageItem = ({
   const messageDate = formatDateRelative(latestMessageDate);
   const secondUserId = conversation.userIds.find((id) => id !== user?.uid);
   const { user: otherUser } = useGetUser(secondUserId);
+  const { isConversationRead } = useCheckIfLastMessageIsRead(conversation?.id);
 
   const handleMessageClick = async (
     userId: string | null | undefined,
@@ -70,14 +73,33 @@ const StartedMessageItem = ({
       />
       <div className="flex flex-col items-start justify-center w-full mb-1 gap-1 max-w-[85%]">
         <div className="flex justify-between items-center w-full">
-          <p className="text-xs">
+          <p
+            className={`text-xs ${
+              isConversationRead === false ? "font-extrabold text-black" : ""
+            }`}
+          >
             {otherUser?.username ? otherUser.username : otherUser?.email}
           </p>
-          <p className="text-[8px] text-gray-500">{messageDate}</p>
+          <p
+            className={`text-[8px] text-gray-500 ${
+              isConversationRead === false ? "font-extrabold text-black" : ""
+            }`}
+          >
+            {messageDate}
+          </p>
         </div>
-        <p className="text-xs text-gray-500 line-clamp-1 max-w-[85%] overflow-hidden break-words">
-          {latestMessage ? latestMessage : "No conversation yet"}
-        </p>
+        {isConversationRead ? (
+          <p className="text-xs text-gray-500 line-clamp-1 max-w-[85%] overflow-hidden break-words">
+            {latestMessage ? latestMessage : "No conversation yet"}
+          </p>
+        ) : (
+          <div className="flex justify-between items-center w-full ">
+            <p className="text-xs line-clamp-1 max-w-[85%] overflow-hidden break-words font-extrabold text-black">
+              {latestMessage ? latestMessage : "No conversation yet"}
+            </p>
+            <NotificationsIcon sx={{ color: "blue", fontSize: "1.5rem" }} />
+          </div>
+        )}
       </div>
     </div>
   );
