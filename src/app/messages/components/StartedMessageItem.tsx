@@ -7,7 +7,9 @@ import { formatDateRelative } from "@/utils/formatDateRelative";
 import { getExistingConversationId } from "@/utils/getExistingConversationId";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { CircularProgress } from "@mui/material";
+import { doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const StartedMessageItem = ({
   conversation,

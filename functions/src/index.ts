@@ -7,6 +7,7 @@ import {
   onDocumentUpdated,
   QueryDocumentSnapshot,
 } from "firebase-functions/v2/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 
 admin.initializeApp();
 
@@ -55,6 +56,29 @@ export const deleteImageFromStorage = onDocumentDeleted(
         );
       }
       return null;
+    }
+  }
+);
+
+export const updateConversationLastUpdated = onDocumentCreated(
+  "conversations/{conversationId}/messages/{messageId}",
+  async (event: CloudEvent<QueryDocumentSnapshot | undefined>) => {
+    if (!event.data) {
+      logger.log("No data found in event.data in document.");
+      return;
+    }
+    const conversationRef = event.data.ref.parent.parent;
+    if (!conversationRef) {
+      logger.error("Could not find the parent conversation document.");
+      return;
+    }
+    try {
+      await conversationRef.update({
+        updatedAt: FieldValue.serverTimestamp(),
+      });
+      console.log(`Succesfully updated time at ${conversationRef.id}`);
+    } catch (error) {
+      console.error(`Error updating time at ${conversationRef.id}`);
     }
   }
 );
