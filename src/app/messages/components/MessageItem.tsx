@@ -4,15 +4,13 @@ import { createConversation } from "@/utils/createConversation";
 import { formatDateRelative } from "@/utils/formatDateRelative";
 import { getExistingConversationId } from "@/utils/getExistingConversationId";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
-  const { latestMessage, latestMessageDate, loading } =
-    useCheckIfConversationExists(
-      followedUser.followerId,
-      followedUser.followedId
-    );
+  const { latestMessage, latestMessageDate } = useCheckIfConversationExists(
+    followedUser.followerId,
+    followedUser.followedId
+  );
   const router = useRouter();
   const messageDate = formatDateRelative(latestMessageDate);
 
@@ -24,13 +22,6 @@ const MessageItem = ({ followedUser }: { followedUser: FollowedUsers }) => {
     }
     router.push(`/messages/${conversationId}`);
   };
-
-  if (loading)
-    return (
-      <div className="w-full flex justify-center items-center pt-4 mt-[60px] cursor-pointer">
-        <CircularProgress />
-      </div>
-    );
   return (
     <div
       key={followedUser.id}

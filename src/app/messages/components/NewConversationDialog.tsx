@@ -13,12 +13,12 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { TransitionProps } from "@mui/material/transitions";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-import { useGetAllConversations } from "@/hooks/messages/useGetAllConversations";
 import useGetFollowedUsers from "@/hooks/followers/useGetFollowedUsers";
 import { FirestoreUser } from "@/hooks/users/useGetUser";
 import { User } from "@/hooks/users/useGetVerifiedUsers";
 import { followUser } from "@/utils/followUser";
 import { useRouter } from "next/navigation";
+import { useGetAllConversations } from "@/hooks/messages/useGetAllConversation";
 
 const Transition = React.forwardRef<
   unknown,

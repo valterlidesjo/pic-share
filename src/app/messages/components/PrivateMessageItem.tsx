@@ -1,19 +1,12 @@
 import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { Messages } from "@/hooks/messages/useGetMessages";
-import { CircularProgress } from "@mui/material";
+import { formatDateRelative } from "@/utils/formatDateRelative";
 
 export const PrivateMessageItem = ({ message }: { message: Messages }) => {
-  const { user, loading: userLoading } = useAuthGuard();
+  const { user } = useAuthGuard();
 
   const isSentByCurrentUser = message.from === user?.uid;
 
-  if (userLoading) {
-    return (
-      <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
-        <CircularProgress />
-      </div>
-    );
-  }
   return (
     <div
       key={message.id}
@@ -32,7 +25,8 @@ export const PrivateMessageItem = ({ message }: { message: Messages }) => {
           {message.message}
         </p>
         <div className="text-xs text-right mt-1 opacity-75">
-          {message.createdAt.toLocaleDateString("sv-SE", {
+          {formatDateRelative(message.createdAt)}
+          {/* {message.createdAt.toLocaleDateString("sv-SE", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
@@ -40,7 +34,7 @@ export const PrivateMessageItem = ({ message }: { message: Messages }) => {
           {message.createdAt.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
-          })}
+          })} */}
         </div>
       </div>
     </div>

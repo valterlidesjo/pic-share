@@ -1,15 +1,19 @@
 import { db } from "@/firebaseConfig";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
-export const addLatestRead = async (messageId: string | null | undefined) => {
-  if (!messageId) {
+export const addLatestRead = async (
+  messageId: string | null | undefined,
+  userId: string
+) => {
+  if (!messageId || !userId) {
     console.error(
-      "No messageId provided, could not add latestConversationRead"
+      "No messageId or userId provided, could not add latestConversationRead"
     );
     return;
   }
+
   const conversationDocRef = doc(db, "conversations", messageId);
   await updateDoc(conversationDocRef, {
-    latestConversationRead: serverTimestamp(),
+    [`readBy.${userId}`]: serverTimestamp(),
   });
 };

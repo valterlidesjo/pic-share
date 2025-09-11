@@ -220,35 +220,64 @@ export const deleteUserTracks = onDocumentDeleted(
     const userId = event.params.userId;
     const db = admin.firestore();
 
+    if (!userId) {
+      console.log(`Dokument ${event.id} hade ingen 'userId'.`);
+      return null;
+    }
+    const batch = db.batch();
+
     const imagesSnapshot = await db
       .collection("images")
       .where("userId", "==", userId)
       .get();
 
-    if (imagesSnapshot.empty) {
-      console.log("No images found for user: ", userId);
-      return null;
+    if (!imagesSnapshot.empty) {
+      imagesSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+      logger.log("Added image documents to the batch for deletion.");
     }
-    const batch = db.batch();
-    imagesSnapshot.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
 
     const followsSnapshot = await db
       .collection("followers")
       .where("followerId", "==", userId)
       .get();
 
-    if (followsSnapshot.empty) {
-      console.log("No follows found for user: ", userId);
-      return null;
+    if (!followsSnapshot.empty) {
+      followsSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+      logger.log("Added follow documents to the batch for deletion.");
     }
-    followsSnapshot.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
+
+    const conversationSnapshot = await db
+      .collection("conversations")
+      .where("userIds", "array-contains", userId)
+      .get();
+
+    if (!conversationSnapshot.empty) {
+      const conversationPromises = conversationSnapshot.docs.map(
+        async (convDoc) => {
+          const convRef = convDoc.ref;
+          const messageSnapshot = await convRef.collection("messages").get();
+          messageSnapshot.docs.forEach((messageDoc) => {
+            batch.delete(messageDoc.ref);
+          });
+        }
+      );
+      await Promise.all(conversationPromises);
+      logger.log(
+        "Added conversation and message documents to the batch for deletion."
+      );
+      conversationSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+    } else {
+      logger.log("Could not find any conversations with user: ", userId);
+    }
 
     await batch.commit();
-    console.log("Email added to images for user: ", userId);
+    logger.log("User traks: ", userId);
     return null;
   }
 );

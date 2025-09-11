@@ -14,19 +14,22 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const StartedMessageItem = ({
   conversation,
+  userId,
 }: {
   conversation: Conversation;
+  userId: string | undefined;
 }) => {
   const { latestMessage, latestMessageDate } = useCheckIfConversationExists(
     conversation.userIds[0],
     conversation.userIds[1]
   );
-  const { user, loading } = useAuthGuard();
   const router = useRouter();
   const messageDate = formatDateRelative(latestMessageDate);
-  const secondUserId = conversation.userIds.find((id) => id !== user?.uid);
+  const secondUserId = conversation.userIds.find((id) => id !== userId);
   const { user: otherUser } = useGetUser(secondUserId);
-  const { isConversationRead } = useCheckIfLastMessageIsRead(conversation?.id);
+
+  const { isConversationRead, loading: lastMessageLoading } =
+    useCheckIfLastMessageIsRead(conversation.id, userId);
 
   const handleMessageClick = async (
     userId: string | null | undefined,
@@ -47,11 +50,11 @@ const StartedMessageItem = ({
     if (!conversationId) {
       conversationId = await createConversation(userId, secondUserId);
     }
-    await addLatestRead(conversationId);
+    await addLatestRead(conversationId, userId);
     router.push(`/messages/${conversationId}`);
   };
 
-  if (loading)
+  if (lastMessageLoading || !userId)
     return (
       <div className="w-full flex justify-center items-center pt-4 mt-[60px]">
         <CircularProgress />
@@ -62,7 +65,7 @@ const StartedMessageItem = ({
     <div
       key={conversation.id}
       className="flex justify-start items-center border-b-[1px] border-gray-500 w-full mb-1 cursor-pointer"
-      onClick={() => handleMessageClick(user?.uid, secondUserId)}
+      onClick={() => handleMessageClick(userId, secondUserId)}
     >
       <AccountCircleIcon
         sx={{

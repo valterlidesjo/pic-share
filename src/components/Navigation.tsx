@@ -17,9 +17,9 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
 import { useGhostGuard } from "@/hooks/auth/useGhostGuard";
-import { useGetAllConversations } from "@/hooks/messages/useGetAllConversations";
 import { extractConversationIdIntoArray } from "@/utils/extractConversationIdIntoArray";
 import { useCheckIfAnyUnreadConversation } from "@/hooks/messages/useCheckIfAnyUnreadConversation";
+import { useGetCompleteConversations } from "@/hooks/messages/useGetCompleteConversations";
 
 const Navigation: React.FC = () => {
   const ghostGuard = useGhostGuard();
@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width:640px)");
-  const { conversations } = useGetAllConversations(user?.uid);
+  const { conversations } = useGetCompleteConversations(user?.uid);
   const conversationIds = useMemo(
     () => extractConversationIdIntoArray(conversations),
     [conversations]

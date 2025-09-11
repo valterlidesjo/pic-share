@@ -53,8 +53,7 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
     return (
       <div className="w-full flex flex-col items-center justify-center mt-[60px]">
         <p className="text-3xl font-bold max-w-[80%] truncate sm:max-w-5xl py-4">
-          {user?.username === "Unknown" ? user?.email : user?.username}&apos;s
-          page
+          {user?.username ? user?.username : user?.email}&apos;s page
         </p>
         <div className="flex justify-center items-center gap-8 mb-8">
           <div className="flex justify-start items-center">
@@ -73,7 +72,7 @@ const UserPage: React.FC<UserPageProps> = ({ params }) => {
             </Button>
           )}
         </div>
-        <p className="text-2xl font-bold">
+        <p className="text-2xl font-bold px-8">
           User has not uploaded any pictures yet.
         </p>
       </div>
