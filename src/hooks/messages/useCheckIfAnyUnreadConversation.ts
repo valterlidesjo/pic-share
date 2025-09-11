@@ -76,6 +76,7 @@ export const useCheckIfAnyUnreadConversation = (
     return () => {
       unsubscribers.forEach((unsub) => unsub());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationIds, userId]);
   return { isAnyConversationUnread, conversationsUnread, loading };
 };

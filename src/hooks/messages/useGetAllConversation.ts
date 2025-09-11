@@ -25,14 +25,24 @@ export const useGetAllConversations = (userId: string | undefined) => {
         const updatedAtDate = data.updatedAt?.toDate
           ? data.updatedAt.toDate()
           : new Date();
-        const latestConversationReadDate = data.latestConversationRead?.toDate
-          ? data.latestConversationRead.toDate()
-          : new Date();
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        const latestReadByUser = data.readBy
+          ? Object.keys(data.readBy).reduce(
+              (acc: Record<string, Date>, userId: string) => {
+                acc[userId] = (data.readBy as Record<string, any>)[
+                  userId
+                ].toDate();
+                return acc;
+              },
+              {}
+            )
+          : {};
+        /* eslint-enable @typescript-eslint/no-explicit-any */
         return {
           id: doc.id,
           createdAt: createdAtDate,
           updatedAt: updatedAtDate,
-          latestConversationRead: latestConversationReadDate,
+          readBy: latestReadByUser,
           userIds: data.userIds,
         };
       });
