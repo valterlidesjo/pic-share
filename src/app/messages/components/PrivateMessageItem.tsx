@@ -26,15 +26,6 @@ export const PrivateMessageItem = ({ message }: { message: Messages }) => {
         </p>
         <div className="text-xs text-right mt-1 opacity-75">
           {formatDateRelative(message.createdAt)}
-          {/* {message.createdAt.toLocaleDateString("sv-SE", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })}{" "}
-          {message.createdAt.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })} */}
         </div>
       </div>
     </div>

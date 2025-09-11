@@ -33,7 +33,7 @@ const Navigation: React.FC = () => {
     [conversations]
   );
   const { conversationsUnread, loading: unreadConversationsLoading } =
-    useCheckIfAnyUnreadConversation(conversationIds);
+    useCheckIfAnyUnreadConversation(conversationIds, user?.uid);
 
   if (loading || ghostGuard.loading || unreadConversationsLoading) {
     return (

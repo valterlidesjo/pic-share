@@ -62,6 +62,6 @@ export const useCheckIfLastMessageIsRead = (
       }
     });
     return () => unsubscribe();
-  }, [conversationId]);
+  }, [conversationId, userId]);
   return { isConversationRead, loading };
 };

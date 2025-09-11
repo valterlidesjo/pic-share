@@ -1,4 +1,3 @@
-import useAuthGuard from "@/hooks/auth/useAuthGuard";
 import { useCheckIfConversationExists } from "@/hooks/messages/useCheckIfConversationExists";
 import { useCheckIfLastMessageIsRead } from "@/hooks/messages/useCheckIfLastMessageIsRead";
 import { Conversation } from "@/hooks/messages/useGetConversation";

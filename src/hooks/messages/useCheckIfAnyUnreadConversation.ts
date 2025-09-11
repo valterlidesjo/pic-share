@@ -2,17 +2,18 @@ import { db } from "@/firebaseConfig";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FirestoreConversation } from "./useGetConversation";
-import useAuthGuard from "../auth/useAuthGuard";
 
-export const useCheckIfAnyUnreadConversation = (conversationIds: string[]) => {
+export const useCheckIfAnyUnreadConversation = (
+  conversationIds: string[],
+  userId: string | undefined
+) => {
   const [isAnyConversationUnread, setIsAnyConversationUnread] =
     useState<boolean>(false);
   const [conversationsUnread, setConversationsUnread] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuthGuard();
 
   useEffect(() => {
-    if (!conversationIds || conversationIds.length === 0 || !user) {
+    if (!conversationIds || conversationIds.length === 0 || !userId) {
       setLoading(false);
       setIsAnyConversationUnread(false);
       setConversationsUnread([]);
@@ -45,7 +46,7 @@ export const useCheckIfAnyUnreadConversation = (conversationIds: string[]) => {
               )
             : {};
           /* eslint-enable @typescript-eslint/no-explicit-any */
-          const currentUserLastReadTime = latestReadByUser[user.uid];
+          const currentUserLastReadTime = latestReadByUser[userId];
 
           const isUnread =
             updatedAtDate &&
@@ -75,6 +76,6 @@ export const useCheckIfAnyUnreadConversation = (conversationIds: string[]) => {
     return () => {
       unsubscribers.forEach((unsub) => unsub());
     };
-  }, [conversationIds]);
+  }, [conversationIds, userId]);
   return { isAnyConversationUnread, conversationsUnread, loading };
 };
